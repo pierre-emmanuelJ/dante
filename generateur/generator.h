@@ -17,6 +17,8 @@
 
 typedef	struct	s_map
 {
+  int		width;
+  int		height;
   int		line;
   int		index;
 }		t_map;
