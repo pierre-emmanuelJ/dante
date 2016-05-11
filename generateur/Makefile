@@ -12,7 +12,7 @@ CC	= cc
 
 RM	= rm -f
 
-CFLAGS	+= -I. -W -Wall -Wextra
+CFLAGS	+= -I. -W -g -Wall -Wextra
 
 NAME	= generateur
 

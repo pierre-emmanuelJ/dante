@@ -23,6 +23,7 @@ typedef	struct	s_map
   int		index;
 }		t_map;
 
+int	check_dead_end(t_map *map, int coord);
 t_map	*create_map(int height, int width);
 
 #endif /* !GENERATOR_H_ */
