@@ -34,9 +34,9 @@ void	display_map(t_map *map)
 	  if (map[i].index == 0)
 	    printf("X");
 	  else if (map[i].index == 1 || map[i].index == 2)
-	    printf("\x1B[37m\x1B[44m*\x1B[0m");
+	    printf("*");
 	  else if (map[i].index == 6)
-	    printf("\x1B[31m\x1B[41m*\x1B[0m");
+	    printf("*");
 	  j++;
 	  i++;
 	}
@@ -455,13 +455,6 @@ t_map	*generator(t_map *map, int fd_file)
       if (direction == LEFT)
 	map = move_left(map, &coord, &count);
       coord = dead_end(map, coord, &flag);
-
-      map[coord].index = 6;
-      display_map(map);
-      printf("\n\n");
-      map[coord].index = 1;
-      usleep(50000);
-
     }
   return (map);
 }
