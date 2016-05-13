@@ -32,9 +32,9 @@ void	display_map(t_map *map)
       while (j < map[0].width)
 	{
 	  if (map[i].index == 0)
-	    printf("\x1B[37m\x1B[47mX\x1B[0m");
+	    printf("X");
 	  else if (map[i].index == 1 || map[i].index == 2)
-	    printf("\x1B[34m\x1B[44m*\x1B[0m");
+	    printf("\x1B[37m\x1B[44m*\x1B[0m");
 	  else if (map[i].index == 6)
 	    printf("\x1B[31m\x1B[41m*\x1B[0m");
 	  j++;
@@ -311,24 +311,40 @@ int	check_dead_end(t_map *map, int coord)
   return (0);
 }
 
-int	dead_end(t_map *map, int coord)
+int	dead_end(t_map *map, int coord, int *flag)
 {
   int	save;
   int	choice;
+  int	flg;
 
+  flg = 0;
+  save = coord;
+  if (try_right(map, coord) != save)
+    flg = 1;
+  if (try_left(map, coord) != save)
+    flg = 2;
   if (check_dead_end(map, coord))
     {
-      save = coord;
-      if ((coord = try_up(map, coord)) != save)
+      if ((coord = try_up(map, coord)) != save && *flag == 1)
 	{
 	  while (coord != save)
 	    {
 	      save = coord;
 	      if ((try_left(map, coord)!= save) || (try_right(map, coord)!= save))
 		{
-		  choice = rand() % 2;
-		  if (choice)
-		    break;
+		  choice = rand() % 3;
+		  if (choice == 0)
+		    coord = try_up(map, coord);
+		  if (choice == 1)
+		    {
+		      coord = try_right(map, coord);
+		      flg = 1;
+		    }
+		  if (choice == 2)
+		    {
+		      coord = try_left(map, coord);
+		      flg = 2;
+		    }
 		}
 	      coord = try_up(map, coord);
 	    }
@@ -340,27 +356,51 @@ int	dead_end(t_map *map, int coord)
 	      save = coord;
               if ((try_left(map, coord)!= save) || (try_right(map, coord)!= save))
 		{
-		  choice = rand() % 2;
-		  if (choice)
-		    break;
+		  choice = rand() % 3;
+		  if (choice == 0)
+		    coord = try_up(map, coord);
+		  if (choice == 1)
+		    {
+		      coord = try_right(map, coord);
+		      flg = 1;
+		    }
+		  if (choice == 2)
+		    {
+		      coord = try_left(map, coord);
+		      flg = 2;
+		    }
 		}
 	      coord = try_down(map, coord);
 	    }
 	}
     }
+  if (try_up(map, coord) != save)
+    *flag = 1;
+  if (try_down(map, coord) != save)
+    *flag = 2;
   if (check_dead_end(map, coord))
     {
       save = coord;
-      if ((coord = try_right(map, coord)) != save)
+      if ((coord = try_right(map, coord)) != save && flg == 1)
 	{
 	  while (coord != save)
 	    {
 	      save = coord;
 	      if ((try_up(map, coord)!= save) || (try_down(map, coord)!= save))
 		{
-		  choice = rand() % 2;
-		  if (choice)
-		    break;
+		  choice = rand() % 3;
+		  if (choice == 0)
+		    coord = try_right(map, coord);
+		  if (choice == 1)
+		    {
+		      coord = try_down(map, coord);
+		      *flag = 2;
+		    }
+		  if (choice == 2)
+		    {
+		      coord = try_up(map, coord);
+		      *flag = 1;
+		    }
 		}
 	      coord = try_right(map, coord);
 	    }
@@ -372,9 +412,19 @@ int	dead_end(t_map *map, int coord)
 	      save = coord;
 	      if ((try_up(map, coord)!= save) || (try_down(map, coord)!= save))
 		{
-		  choice = rand() % 2;
-		  if (choice)
-                  break;
+		  choice = rand() % 3;
+		  if (choice == 0)
+		    coord = try_right(map, coord);
+		  if (choice == 1)
+		    {
+		      coord = try_down(map, coord);
+		      *flag = 2;
+		    }
+		  if (choice == 2)
+		    {
+		      coord = try_up(map, coord);
+		      *flag = 1;
+		    }
 		}
 	      coord = try_left(map, coord);
 	    }
@@ -388,7 +438,9 @@ t_map	*generator(t_map *map, int fd_file)
   int	coord;
   int	direction;
   int	count;
+  int	flag;
 
+  flag = 0;
   count = 1;
   coord = 0;
   while (count < map[0].width * (map[0].height / 2 + 1) + map[0].width / 2)
@@ -402,12 +454,14 @@ t_map	*generator(t_map *map, int fd_file)
 	map = move_down(map, &coord, &count);
       if (direction == LEFT)
 	map = move_left(map, &coord, &count);
-      coord = dead_end(map, coord);
+      coord = dead_end(map, coord, &flag);
+
       map[coord].index = 6;
       display_map(map);
       printf("\n\n");
       map[coord].index = 1;
       usleep(50000);
+
     }
   return (map);
 }
