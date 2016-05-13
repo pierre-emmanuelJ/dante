@@ -35,38 +35,10 @@ void	display_map(t_map *map)
 	    printf("X");
 	  else if (map[i].index == 1 || map[i].index == 2)
 	    printf("*");
-	  else if (map[i].index == 6)
-	    printf("*");
 	  j++;
 	  i++;
 	}
       printf("\n");
-      j = 0;
-      line++;
-    }
-}
-
-void	write_map(t_map *map, int fd_file)
-{
-  int	i;
-  int	j;
-  int	line;
-
-  i = 0;
-  j = 0;
-  line = 0;
-  while (line < map[0].height)
-    {
-      while (j < map[0].width)
-	{
-	  if (map[i].index == 0)
-	    write(fd_file, "X", 1);
-	  else if (map[i].index == 1)
-	    write(fd_file, "*", 1);
-	  j++;
-	  i++;
-	}
-      write(fd_file, "\n", 1);
       j = 0;
       line++;
     }
@@ -311,40 +283,24 @@ int	check_dead_end(t_map *map, int coord)
   return (0);
 }
 
-int	dead_end(t_map *map, int coord, int *flag)
+int	dead_end(t_map *map, int coord)
 {
   int	save;
   int	choice;
-  int	flg;
 
-  flg = 0;
-  save = coord;
-  if (try_right(map, coord) != save)
-    flg = 1;
-  if (try_left(map, coord) != save)
-    flg = 2;
   if (check_dead_end(map, coord))
     {
-      if ((coord = try_up(map, coord)) != save && *flag == 1)
+      save = coord;
+      if ((coord = try_up(map, coord)) != save)
 	{
 	  while (coord != save)
 	    {
 	      save = coord;
 	      if ((try_left(map, coord)!= save) || (try_right(map, coord)!= save))
 		{
-		  choice = rand() % 3;
-		  if (choice == 0)
-		    coord = try_up(map, coord);
-		  if (choice == 1)
-		    {
-		      coord = try_right(map, coord);
-		      flg = 1;
-		    }
-		  if (choice == 2)
-		    {
-		      coord = try_left(map, coord);
-		      flg = 2;
-		    }
+		  choice = rand() % 2;
+		  if (choice)
+		    break;
 		}
 	      coord = try_up(map, coord);
 	    }
@@ -356,51 +312,27 @@ int	dead_end(t_map *map, int coord, int *flag)
 	      save = coord;
               if ((try_left(map, coord)!= save) || (try_right(map, coord)!= save))
 		{
-		  choice = rand() % 3;
-		  if (choice == 0)
-		    coord = try_up(map, coord);
-		  if (choice == 1)
-		    {
-		      coord = try_right(map, coord);
-		      flg = 1;
-		    }
-		  if (choice == 2)
-		    {
-		      coord = try_left(map, coord);
-		      flg = 2;
-		    }
+		  choice = rand() % 2;
+		  if (choice)
+		    break;
 		}
 	      coord = try_down(map, coord);
 	    }
 	}
     }
-  if (try_up(map, coord) != save)
-    *flag = 1;
-  if (try_down(map, coord) != save)
-    *flag = 2;
   if (check_dead_end(map, coord))
     {
       save = coord;
-      if ((coord = try_right(map, coord)) != save && flg == 1)
+      if ((coord = try_right(map, coord)) != save)
 	{
 	  while (coord != save)
 	    {
 	      save = coord;
 	      if ((try_up(map, coord)!= save) || (try_down(map, coord)!= save))
 		{
-		  choice = rand() % 3;
-		  if (choice == 0)
-		    coord = try_right(map, coord);
-		  if (choice == 1)
-		    {
-		      coord = try_down(map, coord);
-		      *flag = 2;
-		    }
-		  if (choice == 2)
-		    {
-		      coord = try_up(map, coord);
-		      *flag = 1;
-		    }
+		  choice = rand() % 2;
+		  if (choice)
+		    break;
 		}
 	      coord = try_right(map, coord);
 	    }
@@ -412,19 +344,9 @@ int	dead_end(t_map *map, int coord, int *flag)
 	      save = coord;
 	      if ((try_up(map, coord)!= save) || (try_down(map, coord)!= save))
 		{
-		  choice = rand() % 3;
-		  if (choice == 0)
-		    coord = try_right(map, coord);
-		  if (choice == 1)
-		    {
-		      coord = try_down(map, coord);
-		      *flag = 2;
-		    }
-		  if (choice == 2)
-		    {
-		      coord = try_up(map, coord);
-		      *flag = 1;
-		    }
+		  choice = rand() % 2;
+		  if (choice)
+                  break;
 		}
 	      coord = try_left(map, coord);
 	    }
@@ -433,14 +355,12 @@ int	dead_end(t_map *map, int coord, int *flag)
   return (coord);
 }
 
-t_map	*generator(t_map *map, int fd_file)
+t_map	*generator(t_map *map)
 {
   int	coord;
   int	direction;
   int	count;
-  int	flag;
 
-  flag = 0;
   count = 1;
   coord = 0;
   while (count < map[0].width * (map[0].height / 2 + 1) + map[0].width / 2)
@@ -454,7 +374,7 @@ t_map	*generator(t_map *map, int fd_file)
 	map = move_down(map, &coord, &count);
       if (direction == LEFT)
 	map = move_left(map, &coord, &count);
-      coord = dead_end(map, coord, &flag);
+      coord = dead_end(map, coord);
     }
   return (map);
 }
@@ -462,7 +382,6 @@ t_map	*generator(t_map *map, int fd_file)
 int	main(int argc, char **argv)
 {
   t_map	*map;
-  int	fd_file;
   int	x;
   int	y;
   int	i;
@@ -471,7 +390,6 @@ int	main(int argc, char **argv)
   srand(time(NULL));
   if (argc > 1 && argc == 3)
     {
-      fd_file = open("map.txt", O_CREAT | O_RDWR, 00644);
       x = atoi(argv[2]);
       y = atoi(argv[1]);
       if (x % 2 == 0)
@@ -485,12 +403,11 @@ int	main(int argc, char **argv)
 	  i++;
 	}
       map = create_map(x, y);
-      map = generator(map, fd_file);
+      map = generator(map);
       display_map(map);
-      close(fd_file);
       free(map);
     }
   else
-    write(1, "./generateur x y [parfait]\n", 30);
+    write(1, "./generateur x y [parfait]\n", 27);
   return (0);
 }
