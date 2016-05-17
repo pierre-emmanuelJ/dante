@@ -17,6 +17,7 @@ CFLAGS	+= -I. -W -O3 -funroll-all-loops -Wall -Wextra
 NAME	= generateur
 
 SRCS	= create_map.c \
+				string_equal.c \
 	  		generator.c
 
 OBJS	= $(SRCS:.c=.o)

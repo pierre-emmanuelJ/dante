@@ -49,7 +49,8 @@ t_map	*move_up(t_map *map, int *coord, int *count)
 {
   if (map[*coord].line > 2)
     {
-      if (map[*coord - map[0].width].index == 0 && map[*coord - (map[0].width * 2)].index == 0)
+      if (map[*coord - map[0].width].index == 0
+	  && map[*coord - (map[0].width * 2)].index == 0)
 	{
 	  *coord = *coord - map[0].width;
 	  map[*coord].index = 1;
@@ -65,7 +66,8 @@ void	check_move_up(t_map *map, int *coord)
 {
   if (map[*coord].line > 2)
     {
-      if (map[*coord - map[0].width].index == 0 && map[*coord - (map[0].width * 2)].index == 0)
+      if (map[*coord - map[0].width].index == 0
+	  && map[*coord - (map[0].width * 2)].index == 0)
 	*coord = *coord - (map[0].width * 2);
     }
 }
@@ -77,7 +79,8 @@ t_map	*move_right(t_map *map, int *coord, int *count)
   if (map[*coord].line > 1)
     {
       position = (*coord - ((map[*coord].line * map[0].width) - map[0].width));
-      if (position < map[0].width -2 && map[*coord + 1].index == 0 && map[*coord + 2].index == 0)
+      if (position < map[0].width -2
+	  && map[*coord + 1].index == 0 && map[*coord + 2].index == 0)
 	{
 	  *coord = *coord + 1;
 	  map[*coord].index = 1;
@@ -107,12 +110,14 @@ void	check_move_right(t_map *map, int *coord)
   if (map[*coord].line > 1)
     {
       position = (*coord - ((map[*coord].line * map[0].width) - map[0].width));
-      if (position < map[0].width -2 && map[*coord + 1].index == 0 && map[*coord + 2].index == 0)
+      if (position < map[0].width -2
+	  && map[*coord + 1].index == 0 && map[*coord + 2].index == 0)
 	*coord = *coord + 2;
     }
   else if ((*coord < map[0].width -1) && map[*coord].line == 1)
     {
-      if (map[*coord +1].index == 0 && map[*coord +2].index == 0)
+      if (map[*coord +1].index == 0
+	  && map[*coord +2].index == 0)
 	*coord = *coord + 2;
     }
 }
@@ -121,7 +126,8 @@ t_map	*move_down(t_map *map, int *coord, int *count)
 {
   if (map[*coord].line < map[0].height -1)
     {
-      if (map[*coord + map[0].width].index == 0 && map[*coord + (map[0].width * 2)].index == 0)
+      if (map[*coord + map[0].width].index == 0
+	  && map[*coord + (map[0].width * 2)].index == 0)
 	{
 	  *coord = *coord + map[0].width;
 	  map[*coord].index = 1;
@@ -137,7 +143,8 @@ void	check_move_down(t_map *map, int *coord)
 {
   if (map[*coord].line < map[0].height -1)
     {
-      if (map[*coord + map[0].width].index == 0 && map[*coord + (map[0].width * 2)].index == 0)
+      if (map[*coord + map[0].width].index == 0
+	  && map[*coord + (map[0].width * 2)].index == 0)
 	*coord = *coord + (map[0].width * 2);
     }
 }
@@ -251,16 +258,6 @@ static t_map	*generator0(t_map *map, int stack_size)
 	    i--;
 	  coord = stack[i];
 	}
-      /*
-      printf("stack_size = %d\n", stack_size);
-      printf("count = %d\n", count);
-      printf("i = %d\n", i);
-      map[coord].index = 6;
-      display_map(map);
-      map[coord].index = 1;
-      printf("\n\n");
-      usleep(50000);
-      */
     }
   free (stack);
   return (map);
@@ -278,7 +275,7 @@ int	main(int argc, char **argv)
   int	y;
 
   srand(time(NULL));
-  if (argc > 1 && argc == 3)
+  if (argc > 1 && argc == 4)
     {
       x = atoi(argv[2]);
       y = atoi(argv[1]);
@@ -286,10 +283,17 @@ int	main(int argc, char **argv)
 	x--;
       if (y % 2 == 0)
 	y--;
-      map = create_map(x, y);
-      generator(map);
-      display_map(map);
-      free(map);
+      if (string_equals(argv[3], "parfait") || string_equals(argv[3], "imparfait"))
+	{
+	  map = create_map(x, y);
+	  generator(map);
+	  if (string_equals(argv[3], "imparfait"))
+	    printf("%s\n", "in construction !!");
+	  display_map(map);
+          free(map);
+	}
+      else
+	write(1, "./generateur x y [parfait]\n", 27);
     }
   else
     write(1, "./generateur x y [parfait]\n", 27);

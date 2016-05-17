@@ -23,6 +23,7 @@ typedef	struct	s_map
   short int	index;
 }		t_map;
 
+int	string_equals(const char *a, const char *b);
 int	check_dead_end(t_map *map, int coord);
 t_map	*create_map(int height, int width);
 
