@@ -32,41 +32,13 @@ void	display_map(t_map *map)
       while (j < map[0].width)
 	{
 	  if (map[i].index == 0)
-	    printf("\x1B[37m\x1B[47mX\x1B[0m");
+	    printf("X");
 	  else if (map[i].index == 1 || map[i].index == 2)
-	    printf("\x1B[34m\x1B[44m*\x1B[0m");
-	  else if (map[i].index == 6)
-	    printf("\x1B[31m\x1B[41m*\x1B[0m");
+	    printf("*");
 	  j++;
 	  i++;
 	}
       printf("\n");
-      j = 0;
-      line++;
-    }
-}
-
-void	write_map(t_map *map, int fd_file)
-{
-  int	i;
-  int	j;
-  int	line;
-
-  i = 0;
-  j = 0;
-  line = 0;
-  while (line < map[0].height)
-    {
-      while (j < map[0].width)
-	{
-	  if (map[i].index == 0)
-	    write(fd_file, "X", 1);
-	  else if (map[i].index == 1)
-	    write(fd_file, "*", 1);
-	  j++;
-	  i++;
-	}
-      write(fd_file, "\n", 1);
       j = 0;
       line++;
     }
@@ -383,7 +355,7 @@ int	dead_end(t_map *map, int coord)
   return (coord);
 }
 
-t_map	*generator(t_map *map, int fd_file)
+t_map	*generator(t_map *map)
 {
   int	coord;
   int	direction;
@@ -403,11 +375,6 @@ t_map	*generator(t_map *map, int fd_file)
       if (direction == LEFT)
 	map = move_left(map, &coord, &count);
       coord = dead_end(map, coord);
-      map[coord].index = 6;
-      display_map(map);
-      printf("\n\n");
-      map[coord].index = 1;
-      usleep(50000);
     }
   return (map);
 }
@@ -415,7 +382,6 @@ t_map	*generator(t_map *map, int fd_file)
 int	main(int argc, char **argv)
 {
   t_map	*map;
-  int	fd_file;
   int	x;
   int	y;
   int	i;
@@ -424,7 +390,6 @@ int	main(int argc, char **argv)
   srand(time(NULL));
   if (argc > 1 && argc == 3)
     {
-      fd_file = open("map.txt", O_CREAT | O_RDWR, 00644);
       x = atoi(argv[2]);
       y = atoi(argv[1]);
       if (x % 2 == 0)
@@ -438,12 +403,11 @@ int	main(int argc, char **argv)
 	  i++;
 	}
       map = create_map(x, y);
-      map = generator(map, fd_file);
+      map = generator(map);
       display_map(map);
-      close(fd_file);
       free(map);
     }
   else
-    write(1, "./generateur x y [parfait]\n", 30);
+    write(1, "./generateur x y [parfait]\n", 27);
   return (0);
 }
