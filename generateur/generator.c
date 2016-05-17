@@ -1,11 +1,11 @@
 /*
-** generator.c for dante in /home/jacqui_p/rendu/IA/dante/
+** gen_opti.c for dante in /home/jacqui_p/rendu/IA/dante/generateur/
 **
 ** Made by Pierre-Emmanuel Jacquier
 ** Login   <jacqui_p@epitech.eu>
 **
-** Started on  Thu Apr 28 14:02:03 2016 Pierre-Emmanuel Jacquier
-** Last update Thu Apr 28 14:02:03 2016 Pierre-Emmanuel Jacquier
+** Started on  Fri May 13 14:24:53 2016 Pierre-Emmanuel Jacquier
+** Last update Fri May 13 14:24:53 2016 Pierre-Emmanuel Jacquier
 */
 
 #include <unistd.h>
@@ -15,7 +15,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
 #include <stdio.h>
 
 void	display_map(t_map *map)
@@ -34,7 +33,9 @@ void	display_map(t_map *map)
 	  if (map[i].index == 0)
 	    printf("X");
 	  else if (map[i].index == 1 || map[i].index == 2)
-	    printf("*");
+	    printf("\x1B[44m*\x1B[0m");
+	  else if (map[i].index == 6)
+	    printf("\x1B[41m*\x1B[0m");
 	  j++;
 	  i++;
 	}
@@ -188,81 +189,6 @@ void	check_move_left(t_map *map, int *coord)
     }
 }
 
-int	try_up(t_map *map, int coord)
-{
-  if (map[coord].line > 2)
-    {
-      if (map[coord - map[0].width].index == 1 && map[coord - (map[0].width * 2)].index == 1)
-	coord = coord - (map[0].width * 2);
-    }
-  return (coord);
-}
-
-int	try_right(t_map *map, int coord)
-{
-  int	position;
-
-  if (map[coord].line > 1)
-    {
-      position = (coord - ((map[coord].line * map[0].width) - map[0].width));
-      if (position < map[0].width -2 && map[coord + 1].index == 1 && map[coord + 2].index == 1)
-	coord = coord + 2;
-    }
-  else if ((coord < map[0].width -1) && map[coord].line == 1)
-    {
-      if (map[coord +1].index == 1 && map[coord +2].index == 1)
-	coord = coord + 2;
-    }
-  return (coord);
-}
-
-int	try_down(t_map *map, int coord)
-{
-  if (map[coord].line < map[0].height)
-    {
-      if (map[coord + map[0].width].index == 1 && map[coord + (map[0].width * 2)].index == 1)
-	coord = coord + (map[0].width * 2);
-    }
-  return (coord);
-}
-
-int	try_left(t_map *map, int coord)
-{
-  int	position;
-
-  if (map[coord].line > 1)
-    {
-      position = (coord - ((map[coord].line * map[0].width) - map[0].width));
-      if (position > 1 && map[coord - 1].index == 1 && map[coord - 2].index == 1)
-	coord = coord -2;
-    }
-  else if (coord > 1 && map[coord].line == 1)
-    {
-      if (map[coord -1].index == 1 && map[coord -2].index == 1)
-	coord = coord - 2;
-    }
-  return (coord);
-}
-
-int	previous_star(t_map *map, int coord)
-{
-  int	pos;
-
-  if (check_dead_end(map, coord))
-    {
-      pos = rand() % 4;
-      if (pos == 0)
-	coord = try_up(map, coord);
-      if (pos == 1)
-	coord = try_down(map, coord);
-      if (pos == 2)
-	coord = try_right(map, coord);
-      if (pos == 3)
-	coord = try_left(map, coord);
-    }
-  return (coord);
-}
-
 int	check_dead_end(t_map *map, int coord)
 {
   int	up;
@@ -283,100 +209,66 @@ int	check_dead_end(t_map *map, int coord)
   return (0);
 }
 
-int	dead_end(t_map *map, int coord)
-{
-  int	save;
-  int	choice;
-
-  if (check_dead_end(map, coord))
-    {
-      save = coord;
-      if ((coord = try_up(map, coord)) != save)
-	{
-	  while (coord != save)
-	    {
-	      save = coord;
-	      if ((try_left(map, coord)!= save) || (try_right(map, coord)!= save))
-		{
-		  choice = rand() % 2;
-		  if (choice)
-		    break;
-		}
-	      coord = try_up(map, coord);
-	    }
-	}
-      else if ((coord = try_down(map, coord)) != save)
-	{
-	  while (coord != save)
-	    {
-	      save = coord;
-              if ((try_left(map, coord)!= save) || (try_right(map, coord)!= save))
-		{
-		  choice = rand() % 2;
-		  if (choice)
-		    break;
-		}
-	      coord = try_down(map, coord);
-	    }
-	}
-    }
-  if (check_dead_end(map, coord))
-    {
-      save = coord;
-      if ((coord = try_right(map, coord)) != save)
-	{
-	  while (coord != save)
-	    {
-	      save = coord;
-	      if ((try_up(map, coord)!= save) || (try_down(map, coord)!= save))
-		{
-		  choice = rand() % 2;
-		  if (choice)
-		    break;
-		}
-	      coord = try_right(map, coord);
-	    }
-	}
-      else if ((coord = try_left(map, coord)) != save)
-	{
-	  while (coord != save)
-	    {
-	      save = coord;
-	      if ((try_up(map, coord)!= save) || (try_down(map, coord)!= save))
-		{
-		  choice = rand() % 2;
-		  if (choice)
-                  break;
-		}
-	      coord = try_left(map, coord);
-	    }
-	}
-    }
-  return (coord);
-}
-
-t_map	*generator(t_map *map)
+static t_map	*generator0(t_map *map, int stack_size)
 {
   int	coord;
   int	direction;
   int	count;
+  int	i;
+  int	*stack;
+  int	save;
 
+  stack = malloc(sizeof(int) * stack_size + 1);
+  i = 0;
   count = 1;
   coord = 0;
-  while (count < map[0].width * (map[0].height / 2 + 1) + map[0].width / 2)
+  while (count < stack_size)
     {
-      direction = rand() % 4;
-      if (direction == UP)
-	map = move_up(map, &coord, &count);
-      if (direction == RIGHT)
-	map = move_right(map, &coord, &count);
-      if (direction == DOWN)
-	map = move_down(map, &coord, &count);
-      if (direction == LEFT)
-	map = move_left(map, &coord, &count);
-      coord = dead_end(map, coord);
+      save = coord;
+      if (check_dead_end(map, coord) == 0)
+	{
+	  direction = rand() % 4;
+	  if (direction == UP)
+	    map = move_up(map, &coord, &count);
+	  if (direction == RIGHT)
+	    map = move_right(map, &coord, &count);
+	  if (direction == DOWN)
+	    map = move_down(map, &coord, &count);
+	  if (direction == LEFT)
+	    map = move_left(map, &coord, &count);
+	}
+      if (check_dead_end(map, coord) == 0 && save != coord)
+	stack[i++] = coord;
+      else if (check_dead_end(map, coord) == 1)
+	{
+	  if (i <= 0)
+	    {
+	      free (stack);
+	      return (map);
+	    }
+	  i--;
+	  while (check_dead_end(map, stack[i]) == 1 && i > 0)
+	    i--;
+	  coord = stack[i];
+	}
+      /*
+      printf("stack_size = %d\n", stack_size);
+      printf("count = %d\n", count);
+      printf("i = %d\n", i);
+      map[coord].index = 6;
+      display_map(map);
+      map[coord].index = 1;
+      printf("\n\n");
+      usleep(50000);
+      */
     }
+  free (stack);
   return (map);
+}
+
+t_map	*generator(t_map *map)
+{
+  return (generator0(map, map[0].width * (map[0].height / 2 + 1) + map[0].width / 2));
 }
 
 int	main(int argc, char **argv)
@@ -384,26 +276,18 @@ int	main(int argc, char **argv)
   t_map	*map;
   int	x;
   int	y;
-  int	i;
 
-  i = 0;
   srand(time(NULL));
   if (argc > 1 && argc == 3)
     {
       x = atoi(argv[2]);
       y = atoi(argv[1]);
       if (x % 2 == 0)
-	{
-	  x--;
-	  i++;
-	}
+	x--;
       if (y % 2 == 0)
-	{
-	  y--;
-	  i++;
-	}
+	y--;
       map = create_map(x, y);
-      map = generator(map);
+      generator(map);
       display_map(map);
       free(map);
     }
