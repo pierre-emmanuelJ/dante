@@ -46,7 +46,7 @@ t_map	*create_map(int height, int width)
   count_index = 1;
   map = malloc(sizeof(t_map) * (height * width));
   map = first(map, height, width);
-  while(line <= height)
+  while (line <= height)
     {
       while (count_index < width)
 	{
