@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:02:57 2016 Nicolas Loriot
-** Last update Wed May 18 16:27:02 2016 Nicolas Loriot
+** Last update Wed May 18 18:27:23 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -62,7 +62,9 @@ t_stack		*getaway(t_stack *top, char **map, int *cur, int *end)
   unsigned int		nb_ways;
   int			*tmp;
 
-  printf("x[%d]y[%d]\n", cur[0], cur[1]);
+  /* if (cur[0] == 10 && cur[1] == 18) */
+  /*   return (top); */
+  /* printf("x[%d]y[%d]\n", cur[0], cur[1]); */
   map[cur[0]][cur[1]] = '+';
   if (end[0] == cur[0] && end[1] == cur[1])
     return (top);
@@ -72,7 +74,7 @@ t_stack		*getaway(t_stack *top, char **map, int *cur, int *end)
       top = fill_stack(top, map, cur);
       return (getaway(top, map, get_coord(map, cur), end));
     }
-  else if (get_x(map, cur) == -1 && get_y(map, cur) == -1)
+  else if (!nb_ways)
     {
       tmp = top->coord;
       top = pop(top);
