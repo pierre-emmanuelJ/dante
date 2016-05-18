@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Thu Apr 28 17:36:21 2016 Nicolas Loriot
-** Last update Tue May 17 20:53:25 2016 Nicolas Loriot
+** Last update Wed May 18 15:43:31 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -28,11 +28,11 @@ static char	**read_file(int fd)
 
   if (fstat(fd, &sb) == -1)
     exit(EXIT_FAILURE);
-  if (!(map = malloc(sizeof(char *) * sb.st_size)))
-    exit(EXIT_FAILURE);
+  map = NULL;
   i = 0;
   while ((s = get_next_line(fd)))
     {
+      (map = realloc(map, sizeof(char *) * (i + 2))) ? (0) : (exit(EXIT_FAILURE));
       (map[i] = strdup(s)) ? (0) : (exit(EXIT_FAILURE));
       free(s);
       i++;

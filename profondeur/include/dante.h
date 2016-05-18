@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:09:23 2016 Nicolas Loriot
-** Last update Tue May 17 20:51:17 2016 Nicolas Loriot
+** Last update Wed May 18 15:53:50 2016 Nicolas Loriot
 */
 
 #ifndef TREE_H_
@@ -61,9 +61,10 @@ t_stack	*add(t_stack *last, int x, int y);
 t_stack	*pop(t_stack *last);
 int	*get_coord(char **map, int *cur);
 int	get_y(char **map, int *cur);
-void	print_result(char **map);
-void	getaway(t_stack *top, char **map, int *cur, int *end);
-int	*get_end_maze(char **map);
+void	print_result(char **map, t_stack *last);
+t_stack	*getaway(t_stack *top, char **map, int *cur, int *end);
+int	*get_end_maze(char **map, int *end);
 int	get_x(char **map, int *cur);
+void	free_stack(t_stack *last);
 
 #endif /* !TREE_H_ */

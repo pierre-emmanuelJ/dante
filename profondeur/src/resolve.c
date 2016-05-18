@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Fri Apr 29 12:51:33 2016 Nicolas Loriot
-** Last update Wed May 18 14:26:50 2016 Nicolas Loriot
+** Last update Wed May 18 15:53:53 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -38,8 +38,27 @@ int	get_y(char **map, int *cur)
 
 int		*get_coord(char **map, int *cur)
 {
-  cur[0] = get_x(map, cur);
-  cur[1] = get_y(map, cur);
+  int		*tmp;
+
+  if (!(tmp = malloc(sizeof(int *) * 2)))
+    exit(EXIT_FAILURE);
+  tmp[0] = cur[0];
+  tmp[1] = cur[1];
+  if ((cur[0] = get_x(map, tmp)) == -1)
+    {
+      if ((cur[1] = get_y(map, tmp)) == -1)
+	return (cur);
+      else
+	cur[0] = tmp[0];
+    }
+  else if ((cur[1] = get_y(map, tmp)) == -1)
+    {
+      if ((cur[0] = get_x(map, tmp)) == -1)
+	return (cur);
+      else
+	cur[1] = tmp[1];
+    }
+  free(tmp);
   return (cur);
 }
 
@@ -50,23 +69,24 @@ void		resolve(char **map)
   int		*end;
 
   top = NULL;
-  if (!(cur = malloc(sizeof(int *) * 2)) || !(end = malloc(sizeof(int *) * 2)))
+  if (!(cur = malloc(sizeof(int) * 2)) || !(end = malloc(sizeof(int) * 2)))
     exit(EXIT_FAILURE);
   cur[0] = 0;
   cur[1] = 0;
-  end = get_end_maze(map);
+  end = get_end_maze(map, end);
   getaway(top, map, cur, end);
+  free(cur);
+  free(end);
+  print_result(map, top);
 }
 
-void		print_result(char **map)
+void		print_result(char **map, t_stack *last)
 {
   int		i;
-  int		k;
   int		j;
 
   i = 0;
   j = 0;
-  k = 0;
   while (map[i])
     {
       j = 0;
@@ -74,8 +94,6 @@ void		print_result(char **map)
 	{
 	  if (map[i][j] == '+')
 	    putchar('o');
-	  /* if (map[i][j] != 'X' || (map[i][j] != '*') || (map[i][j] != '+')) */
-	  /*   putchar('o'); */
 	  else
 	    putchar(map[i][j]);
 	  j++;
@@ -83,7 +101,9 @@ void		print_result(char **map)
       putchar('\n');
       i++;
     }
-  while (map[k])
-    free(map[k++]);
+  i = 0;
+  free_stack(last);
+  while (map[i])
+    free(map[i++]);
   exit(EXIT_SUCCESS);
 }
