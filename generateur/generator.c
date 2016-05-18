@@ -91,7 +91,7 @@ t_map	*move_right(t_map *map, int *coord, int *count)
     }
   else if ((*coord < map[0].width -1) && map[*coord].line == 1)
     {
-      if (map[*coord +1].index == 0 && map[*coord +2].index == 0)
+      if (map[*coord + 1].index == 0 && map[*coord + 2].index == 0)
 	{
 	  *coord = *coord + 1;
 	  map[*coord].index = 1;
@@ -116,8 +116,8 @@ void	check_move_right(t_map *map, int *coord)
     }
   else if ((*coord < map[0].width -1) && map[*coord].line == 1)
     {
-      if (map[*coord +1].index == 0
-	  && map[*coord +2].index == 0)
+      if (map[*coord + 1].index == 0
+	  && map[*coord + 2].index == 0)
 	*coord = *coord + 2;
     }
 }
@@ -216,10 +216,25 @@ int	check_dead_end(t_map *map, int coord)
   return (0);
 }
 
+void	move(t_map *map, int *coord, int *count, int *save)
+{
+  int	direction;
+
+  *save = *coord;
+  direction = rand() % 4;
+  if (direction == UP)
+    map = move_up(map, coord, count);
+  if (direction == RIGHT)
+    map = move_right(map, coord, count);
+  if (direction == DOWN)
+    map = move_down(map, coord, count);
+  if (direction == LEFT)
+    map = move_left(map, coord, count);
+}
+
 static t_map	*generator0(t_map *map, int stack_size)
 {
   int	coord;
-  int	direction;
   int	count;
   int	i;
   int	*stack;
@@ -231,28 +246,11 @@ static t_map	*generator0(t_map *map, int stack_size)
   coord = 0;
   while (count < stack_size)
     {
-      save = coord;
-      if (check_dead_end(map, coord) == 0)
-	{
-	  direction = rand() % 4;
-	  if (direction == UP)
-	    map = move_up(map, &coord, &count);
-	  if (direction == RIGHT)
-	    map = move_right(map, &coord, &count);
-	  if (direction == DOWN)
-	    map = move_down(map, &coord, &count);
-	  if (direction == LEFT)
-	    map = move_left(map, &coord, &count);
-	}
+      move(map, &coord, &count, &save);
       if (check_dead_end(map, coord) == 0 && save != coord)
 	stack[i++] = coord;
       else if (check_dead_end(map, coord) == 1)
 	{
-	  if (i <= 0)
-	    {
-	      free (stack);
-	      return (map);
-	    }
 	  i--;
 	  while (check_dead_end(map, stack[i]) == 1 && i > 0)
 	    i--;
@@ -265,7 +263,8 @@ static t_map	*generator0(t_map *map, int stack_size)
 
 t_map	*generator(t_map *map)
 {
-  return (generator0(map, map[0].width * (map[0].height / 2 + 1) + map[0].width / 2));
+  return (generator0(map, map[0].width *
+		     (map[0].height / 2 + 1) + map[0].height / 2));
 }
 
 int	main(int argc, char **argv)
