@@ -23,14 +23,24 @@ typedef	struct	s_map
   short int	index;
 }		t_map;
 
+typedef	struct	s_x_y
+{
+  int		x;
+  int		y;
+  short int	live;
+}		t_x_y;
+
+
 t_map	*move_up(t_map *map, int *coord, int *count);
 t_map	*move_right(t_map *map, int *coord, int *count);
 t_map	*move_down(t_map *map, int *coord, int *count);
 t_map	*move_left(t_map *map, int *coord, int *count);
+
 void	check_move_up(t_map *map, int *coord);
 void	check_move_right(t_map *map, int *coord);
 void	check_move_down(t_map *map, int *coord);
 void	check_move_left(t_map *map, int *coord);
+
 int	string_equals(const char *a, const char *b);
 int	check_dead_end(t_map *map, int coord);
 t_map	*create_map(int height, int width);

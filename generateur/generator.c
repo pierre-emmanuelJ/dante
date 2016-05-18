@@ -17,12 +17,55 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-void	display_map(t_map *map)
+void	y_one_of_two(int live, short int *two)
+{
+  if (*two == 0)
+    {
+      if (live)
+	printf("\x1B[44m*\x1B[0m");
+      else
+	printf("*");
+      *two =+ 1;
+    }
+  else if (*two == 1)
+    {
+     if (live)
+	printf("\x1B[37mX\x1B[0m");
+      else
+	printf("X");
+      *two = 0;
+    }
+}
+
+void	x_one_of_two(short int live, int width)
+{
+  int	i;
+
+  i = 1;
+  while (i < width)
+    {
+      if (live)
+      printf("\x1B[37mX\x1B[0m");
+      else
+      printf("X");
+      i++;
+      if (live)
+      printf("\x1B[44m*\x1B[0m");
+      else
+      printf("*");
+      i++;
+    }
+  printf("\n");
+}
+
+void	display_map(t_map *map, short int y, short int live)
 {
   int	i;
   int	j;
   int	line;
+  short int	two;
 
+  two = 0;
   i = 0;
   j = 0;
   line = 0;
@@ -30,15 +73,27 @@ void	display_map(t_map *map)
     {
       while (j < map[0].width)
 	{
-	  if (map[i].index == 0)
-	    printf("X");
-	  else if (map[i].index == 1 || map[i].index == 2)
-	    printf("\x1B[44m*\x1B[0m");
-	  else if (map[i].index == 6)
-	    printf("\x1B[41m*\x1B[0m");
+	  if (live)
+	    {
+	      if (map[i].index == 0)
+		printf("X");
+	      else if (map[i].index == 1)
+		printf("\x1B[44m*\x1B[0m");
+	      else if (map[i].index == 6)
+		printf("\x1B[41m*\x1B[0m");
+	    }
+	  else
+	    {
+	      if (map[i].index == 0)
+		printf("X");
+	      else if (map[i].index == 1)
+		printf("*");
+	    }
 	  j++;
 	  i++;
 	}
+      if (y)
+	y_one_of_two(live, &two);
       printf("\n");
       j = 0;
       line++;
@@ -81,7 +136,16 @@ void	move(t_map *map, int *coord, int *count, int *save)
     map = move_left(map, coord, count);
 }
 
-static t_map	*generator0(t_map *map, int stack_size)
+void	display_live(t_map *map, int coord)
+{
+  map[coord].index = 6;
+  display_map(map, 0, 1);
+  printf("\n\n\n");
+  map[coord].index = 1;
+  usleep(10000);
+}
+
+static t_map	*generator0(t_map *map, int stack_size, int live)
 {
   int	coord;
   int	count;
@@ -105,43 +169,92 @@ static t_map	*generator0(t_map *map, int stack_size)
 	    i--;
 	  coord = stack[i];
 	}
+      if (live)
+	display_live(map, coord);
     }
   free (stack);
   return (map);
 }
 
-t_map	*generator(t_map *map)
+t_map	*generator(t_map *map, int live)
 {
   return (generator0(map, map[0].width *
-		     (map[0].height / 2 + 1) + map[0].height / 2));
+		     (map[0].height / 2 + 1) + map[0].height / 2, live));
+}
+
+void	x_y(t_x_y *coord, char **argv)
+{
+  coord->x = atoi(argv[1]);
+  coord->y = atoi(argv[2]);
+  if (coord->x % 2 == 0)
+    coord->x -= 1;
+  if (coord->y % 2 == 0)
+    coord->y -= 1;
+}
+
+void	unperfect(t_map *map, int total_wall)
+{
+  int	to_break;
+  int	map_size;
+  int	i;
+  int	index;
+
+  i = 0;
+  map_size = map[0].width * map[0].height;
+  to_break = (map_size - total_wall) / 4;
+  while (i < to_break)
+    {
+      index = rand() % map_size;
+      if (map[index].index == 0)
+	{
+	  map[index].index = 1;
+	  i++;
+	}
+    }
+}
+
+void	perfect(char **argv, short int live, short int imparfait)
+{
+  t_map	*map;
+  t_x_y	coord;
+
+  x_y(&coord, argv);
+  coord.live = live;
+  map = create_map(coord.y, coord.x);
+  generator(map, coord.live);
+  if (imparfait)
+    unperfect(map, map[0].width * (map[0].height / 2 + 1) + map[0].height / 2);
+  if (coord.x < atoi(argv[1]))
+    display_map(map, 1, coord.live);
+  else if (coord.x == atoi(argv[1]))
+    display_map(map, 0, coord.live);
+  if (coord.x == atoi(argv[1]) && coord.y < atoi(argv[2]))
+    {
+      printf("X");
+      x_one_of_two(coord.live, atoi(argv[1]));
+    }
+  else if (coord.y < atoi(argv[2]))
+    x_one_of_two(coord.live, atoi(argv[1]));
+  free(map);
 }
 
 int	main(int argc, char **argv)
 {
-  t_map	*map;
-  int	x;
-  int	y;
-
   srand(time(NULL));
-  if (argc > 1 && argc == 4)
+  if ((argc > 1 && argc == 4))
     {
-      x = atoi(argv[2]);
-      y = atoi(argv[1]);
-      if (x % 2 == 0)
-	x--;
-      if (y % 2 == 0)
-	y--;
-      if (string_equals(argv[3], "parfait") || string_equals(argv[3], "imparfait"))
-	{
-	  map = create_map(x, y);
-	  generator(map);
-	  if (string_equals(argv[3], "imparfait"))
-	    printf("%s\n", "in construction !!");
-	  display_map(map);
-          free(map);
-	}
-      else
-	write(1, "./generateur x y [parfait]\n", 27);
+      if (string_equals(argv[3], "parfait"))
+	perfect(argv, 0, 0);
+      if (string_equals(argv[3], "--live"))
+	perfect(argv, 1, 1);
+    }
+  else if ((argc > 1 && argc == 3))
+    perfect(argv, 0, 1);
+  else if ((argc > 1 && argc == 5))
+    {
+      if (string_equals(argv[3], "parfait")
+	  && string_equals(argv[4], "--live"))
+	perfect(argv, 1, 0);
     }
   else
     write(1, "./generateur x y [parfait]\n", 27);
