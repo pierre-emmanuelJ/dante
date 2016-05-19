@@ -1,40 +1,45 @@
 ##
-## Makefile for dante in /home/jacqui_p/rendu/IA/dante/
+## Makefile for dante in /home/jacqui_p/rendu/IA/dante/generateur/
 ##
 ## Made by Pierre-Emmanuel Jacquier
 ## Login   <jacqui_p@epitech.eu>
 ##
-## Started on  Tue May  3 17:43:27 2016 Pierre-Emmanuel Jacquier
-## Last update Tue May  3 17:43:27 2016 Pierre-Emmanuel Jacquier
+## Started on  Thu May 19 16:24:05 2016 Pierre-Emmanuel Jacquier
+## Last update Thu May 19 16:24:05 2016 Pierre-Emmanuel Jacquier
 ##
 
-CC	= cc
+CC		=	gcc
 
-RM	= rm -f
+RM		=	rm -f
 
-CFLAGS	+= -I. -W -O3 -g -funroll-all-loops -Wall -Wextra
+SRCDIR	=	./src/
 
-NAME	= generateur
+SRC		=	./src/create_map.c \
+				./src/move.c \
+				./src/check_move.c \
+				./src/string_equal.c \
+	  		./src/generator.c
 
-SRCS	= create_map.c \
-				move.c \
-				check_move.c \
-				string_equal.c \
-	  		generator.c
+INCDIR	=	./include
 
-OBJS	= $(SRCS:.c=.o)
+OBJ		=	$(SRC:.c=.o)
 
-all: $(NAME)
+NAME	=	generateur
 
-$(NAME): $(OBJS)
-	$(CC) -o $(NAME) $(OBJS)
+CFLAGS	= -I./include -W -O3 -funroll-all-loops -Wall -Wextra
+
+all:		$(NAME)
+
+$(NAME):	$(OBJ)
+			$(CC) -o $(NAME) $(SRC) $(CFLAGS)
+
 
 clean:
-	$(RM) $(OBJS)
+			$(RM) $(OBJ)
 
-fclean: clean
-	$(RM) $(NAME)
+fclean:		clean
+			$(RM) $(NAME)
 
-re: fclean all
+re:			fclean all
 
 .PHONY: all clean fclean re
