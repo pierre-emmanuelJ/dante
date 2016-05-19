@@ -30,12 +30,18 @@ typedef	struct	s_x_y
   short int	live;
 }		t_x_y;
 
-
 t_map	*move_up(t_map *map, int *coord, int *count);
 t_map	*move_right(t_map *map, int *coord, int *count);
 t_map	*move_down(t_map *map, int *coord, int *count);
 t_map	*move_left(t_map *map, int *coord, int *count);
 
+void	decrement_coord(int *coord, t_map *map, int *count);
+void	x_one_of_two(short int live, int width);
+void	display_map(t_map *map, short int y, short int live);
+void	x_y(t_x_y *coord, char **argv);
+void	display_live(t_map *map, int coord);
+void	move(t_map *map, int *coord, int *count, int *save);
+void	perfect(char **argv, short int live, short int imparfait);
 void	check_move_up(t_map *map, int *coord);
 void	check_move_right(t_map *map, int *coord);
 void	check_move_down(t_map *map, int *coord);

@@ -1,9 +1,9 @@
 /*
 ** main.c for dante in /home/nico/rendu/S02/IA/dante/src
-** 
+**
 ** Made by Nicolas Loriot
 ** Login   <loriot_n@epitech.net>
-** 
+**
 ** Started on  Thu Apr 28 17:36:21 2016 Nicolas Loriot
 ** Last update Wed May 18 15:43:31 2016 Nicolas Loriot
 */

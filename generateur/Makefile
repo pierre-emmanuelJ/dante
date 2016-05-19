@@ -14,7 +14,11 @@ RM		=	rm -f
 
 SRCDIR	=	./src/
 
-SRC		=	./src/create_map.c \
+SRC		=	./src/main.c \
+				./src/coord.c \
+				./src/display.c \
+				./src/dead_end.c \
+				./src/create_map.c \
 				./src/move.c \
 				./src/check_move.c \
 				./src/string_equal.c \

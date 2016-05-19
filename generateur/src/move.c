@@ -27,6 +27,15 @@ t_map	*move_up(t_map *map, int *coord, int *count)
   return (map);
 }
 
+static void	increment_coord(int *coord, t_map *map, int *count)
+{
+  *coord = *coord + 1;
+  map[*coord].index = 1;
+  *coord = *coord + 1;
+  map[*coord].index = 1;
+  *count = *count + 2;
+}
+
 t_map	*move_right(t_map *map, int *coord, int *count)
 {
   int	position;
@@ -36,24 +45,12 @@ t_map	*move_right(t_map *map, int *coord, int *count)
       position = (*coord - ((map[*coord].line * map[0].width) - map[0].width));
       if (position < map[0].width -2
 	  && map[*coord + 1].index == 0 && map[*coord + 2].index == 0)
-	{
-	  *coord = *coord + 1;
-	  map[*coord].index = 1;
-	  *coord = *coord + 1;
-	  map[*coord].index = 1;
-	  *count = *count + 2;
-	}
+	increment_coord(coord, map, count);
     }
   else if ((*coord < map[0].width -1) && map[*coord].line == 1)
     {
       if (map[*coord + 1].index == 0 && map[*coord + 2].index == 0)
-	{
-	  *coord = *coord + 1;
-	  map[*coord].index = 1;
-          *coord = *coord + 1;
-	  map[*coord].index = 1;
-	  *count = *count + 2;
-	}
+	increment_coord(coord, map, count);
     }
   return (map);
 }
@@ -83,24 +80,12 @@ t_map	*move_left(t_map *map, int *coord, int *count)
     {
       position = (*coord - ((map[*coord].line * map[0].width) - map[0].width));
       if (position > 1 && map[*coord - 1].index == 0 && map[*coord - 2].index == 0)
-	{
-	  *coord = *coord -1;
-	  map[*coord].index = 1;
-	  *coord = *coord -1;
-	  map[*coord].index = 1;
-	  *count = *count + 2;
-	}
+	decrement_coord(coord, map, count);
     }
   else if (*coord > 1 && map[*coord].line == 1)
     {
       if (map[*coord -1].index == 0 && map[*coord -2].index == 0)
-	{
-	  *coord = *coord - 1;
-	  map[*coord].index = 1;
-          *coord = *coord - 1;
-	  map[*coord].index = 1;
-	  *count = *count + 2;
-	}
+	decrement_coord(coord, map, count);
     }
   return (map);
 }
