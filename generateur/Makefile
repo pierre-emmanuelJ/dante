@@ -12,7 +12,7 @@ CC	= cc
 
 RM	= rm -f
 
-CFLAGS	+= -I. -W -O3 -funroll-all-loops -Wall -Wextra
+CFLAGS	+= -I. -W -O3 -g -funroll-all-loops -Wall -Wextra
 
 NAME	= generateur
 
