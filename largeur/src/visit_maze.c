@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Fri Apr 29 15:35:51 2016 Nicolas Loriot
-** Last update Wed May 18 16:20:15 2016 Nicolas Loriot
+** Last update Thu May 19 12:25:48 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -23,7 +23,6 @@ static t_stack	*get_newnode(t_stack *last)
       return (new);
     }
   new->next = last;
-  /* new = last; */
   return (new);
 }
 
@@ -32,9 +31,7 @@ t_stack		*pop(t_stack *top)
   t_stack	*tmp;
 
   tmp = top->next;
-  /* free(last->coord); */
   free(top);
-  /* last->next = last->next->next; */
   return (tmp);
 }
 
@@ -55,6 +52,5 @@ t_stack		*add(t_stack *last, int x, int y)
   new->visited = false;
   new->coord[0] = x;
   new->coord[1] = y;
-  /* printf("x1=%d y1=%d\n", new->coord[0], new->coord[1]); */
   return (new);
 }
