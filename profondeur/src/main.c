@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Thu Apr 28 17:36:21 2016 Nicolas Loriot
-** Last update Wed May 18 15:43:31 2016 Nicolas Loriot
+** Last update Thu May 19 16:57:49 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -14,8 +14,8 @@ static int	check_map(char *file)
 {
   int		fd;
 
-  if ((fd = open(file, O_RDONLY)) == -1)
-    perror("dante");
+  if ((fd = open(file, O_RDWR)) < 0)
+    perror(file);
   return (fd);
 }
 
