@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Fri Apr 29 12:51:33 2016 Nicolas Loriot
-** Last update Wed May 18 18:26:34 2016 Nicolas Loriot
+** Last update Fri May 20 15:01:36 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -55,7 +55,7 @@ int		*get_coord(char **map, int *cur)
 
 void		resolve(char **map)
 {
-  t_stack	*top;
+  t_queue	*top;
   int		*cur;
   int		*end;
 
@@ -65,13 +65,13 @@ void		resolve(char **map)
   cur[0] = 0;
   cur[1] = 0;
   end = get_end_maze(map, end);
-  getaway(top, map, cur, end);
+  bfs_v2(map, cur, end);
   free(cur);
   free(end);
   print_result(map, top);
 }
 
-void		print_result(char **map, t_stack *last)
+void		print_result(char **map, t_queue *last)
 {
   int		i;
   int		j;
@@ -93,8 +93,8 @@ void		print_result(char **map, t_stack *last)
       i++;
     }
   i = 0;
-  free_stack(last);
-  while (map[i])
-    free(map[i++]);
-  exit(EXIT_SUCCESS);
+  /* free_queue(last); */
+  /* while (map[i]) */
+  /*   free(map[i++]); */
+  /* exit(EXIT_SUCCESS); */
 }
