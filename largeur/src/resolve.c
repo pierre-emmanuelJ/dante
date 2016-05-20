@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Fri Apr 29 12:51:33 2016 Nicolas Loriot
-** Last update Fri May 20 15:01:36 2016 Nicolas Loriot
+** Last update Fri May 20 16:02:24 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -93,8 +93,8 @@ void		print_result(char **map, t_queue *last)
       i++;
     }
   i = 0;
-  /* free_queue(last); */
-  /* while (map[i]) */
-  /*   free(map[i++]); */
-  /* exit(EXIT_SUCCESS); */
+  free_queue(last);
+  while (map[i])
+    free(map[i++]);
+  exit(EXIT_SUCCESS);
 }

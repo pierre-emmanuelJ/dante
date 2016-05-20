@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Thu May 19 14:32:12 2016 Nicolas Loriot
-** Last update Fri May 20 15:11:50 2016 Nicolas Loriot
+** Last update Fri May 20 15:59:56 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -39,6 +39,7 @@ t_queue		*dequeue(t_queue *current)
     return (NULL);
   tmp = current->next;
   free(current->coord);
+  free(current->tail);
   free(current);
   return (tmp);
 }
