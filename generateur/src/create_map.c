@@ -34,11 +34,11 @@ static t_map	*fill_map(int i, int line, t_map *map)
   return (map);
 }
 
-static t_map	*prepare(int height, int width)
+static t_map	*prepare(int height, int width, t_x_y coord)
 {
   t_map *map;
 
-  if (height > 20000 || width > 20000 || height < 2 || width < 2)
+  if (height > 20000 || width > 20000 || coord.height < 2 || coord.width < 2)
     {
       printf("Input overflow or less than 2 or not a number\n");
       exit(EXIT_FAILURE);
@@ -49,7 +49,7 @@ static t_map	*prepare(int height, int width)
   return (map);
 }
 
-t_map		*create_map(int height, int width)
+t_map		*create_map(int height, int width, t_x_y coord)
 {
   int		i;
   int		line;
@@ -59,7 +59,7 @@ t_map		*create_map(int height, int width)
   i = 1;
   line = 1;
   count_index = 1;
-  map = prepare(height, width);
+  map = prepare(height, width, coord);
   while (line <= height)
     {
       while (count_index < width)

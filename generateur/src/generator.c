@@ -85,7 +85,7 @@ void	perfect(char **argv, short int live, short int imparfait)
 
   x_y(&coord, argv);
   coord.live = live;
-  map = create_map(coord.y, coord.x);
+  map = create_map(coord.y, coord.x, coord);
   generator(map, coord.live);
   if (imparfait)
     unperfect(map, map[0].width * (map[0].height / 2 + 1) + map[0].height / 2);

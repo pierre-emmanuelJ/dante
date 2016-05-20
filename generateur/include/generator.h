@@ -25,6 +25,8 @@ typedef	struct	s_map
 
 typedef	struct	s_x_y
 {
+  int		width;
+  int		height;
   int		x;
   int		y;
   short int	live;
@@ -34,7 +36,7 @@ t_map	*move_up(t_map *map, int *coord, int *count);
 t_map	*move_right(t_map *map, int *coord, int *count);
 t_map	*move_down(t_map *map, int *coord, int *count);
 t_map	*move_left(t_map *map, int *coord, int *count);
-t_map	*create_map(int height, int width);
+t_map	*create_map(int height, int width, t_x_y coord);
 
 void	decrement_coord(int *coord, t_map *map, int *count);
 void	x_one_of_two(short int live, int width);
