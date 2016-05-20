@@ -5,7 +5,7 @@
 ## Login   <loriot_n@epitech.net>
 ## 
 ## Started on  Mon May 02 12:40:32 2016 Nicolas Loriot
-## Last update Thu May 12 14:38:27 2016 Nicolas Loriot
+## Last update Thu May 19 16:58:29 2016 Nicolas Loriot
 ##
 
 CC		=	gcc
@@ -26,7 +26,7 @@ OBJ		=	$(SRC:.c=.o)
 
 NAME	=	solver
 
-CFLAGS	= -I./include -Wall -Wextra -g3
+CFLAGS	= -I./include -Wall -Wextra -O3 -funroll-all-loops
 
 all:		$(NAME)
 
