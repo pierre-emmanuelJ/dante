@@ -14,7 +14,11 @@ RM		=	rm -f
 
 SRCDIR	=	./src/
 
-SRC		=	./src/create_map.c \
+SRC		=	./src/main.c \
+				./src/coord.c \
+				./src/display.c \
+				./src/dead_end.c \
+				./src/create_map.c \
 				./src/move.c \
 				./src/check_move.c \
 				./src/string_equal.c \
@@ -26,7 +30,7 @@ OBJ		=	$(SRC:.c=.o)
 
 NAME	=	generateur
 
-CFLAGS	= -I./include -W -O3 -funroll-all-loops -Wall -Wextra
+CFLAGS	= -I./include -W -O3 -g -funroll-all-loops -Wall -Wextra
 
 all:		$(NAME)
 

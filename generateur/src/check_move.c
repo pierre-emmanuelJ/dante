@@ -20,7 +20,6 @@ void	check_move_up(t_map *map, int *coord)
     }
 }
 
-
 void	check_move_right(t_map *map, int *coord)
 {
   int	position;
@@ -40,7 +39,6 @@ void	check_move_right(t_map *map, int *coord)
     }
 }
 
-
 void	check_move_down(t_map *map, int *coord)
 {
   if (map[*coord].line < map[0].height -1)
@@ -50,7 +48,6 @@ void	check_move_down(t_map *map, int *coord)
 	*coord = *coord + (map[0].width * 2);
     }
 }
-
 
 void	check_move_left(t_map *map, int *coord)
 {
