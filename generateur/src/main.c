@@ -21,6 +21,8 @@ void	x_y(t_x_y *coord, char **argv)
 {
   coord->x = atoi(argv[1]);
   coord->y = atoi(argv[2]);
+  coord->width = coord->x;
+  coord->height = coord->y;
   if (coord->x % 2 == 0)
     coord->x -= 1;
   if (coord->y % 2 == 0)
