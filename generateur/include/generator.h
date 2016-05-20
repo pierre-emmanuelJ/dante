@@ -34,6 +34,7 @@ t_map	*move_up(t_map *map, int *coord, int *count);
 t_map	*move_right(t_map *map, int *coord, int *count);
 t_map	*move_down(t_map *map, int *coord, int *count);
 t_map	*move_left(t_map *map, int *coord, int *count);
+t_map	*create_map(int height, int width);
 
 void	decrement_coord(int *coord, t_map *map, int *count);
 void	x_one_of_two(short int live, int width);
@@ -49,6 +50,5 @@ void	check_move_left(t_map *map, int *coord);
 
 int	string_equals(const char *a, const char *b);
 int	check_dead_end(t_map *map, int coord);
-t_map	*create_map(int height, int width);
 
 #endif /* !GENERATOR_H_ */

@@ -9,6 +9,7 @@
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "generator.h"
 
 static t_map	*fill_last_index(t_map *map, int last, int line)
@@ -18,13 +19,12 @@ static t_map	*fill_last_index(t_map *map, int last, int line)
   return (map);
 }
 
-static t_map	*first(t_map *map, int height, int width)
+static void	first(t_map *map, int height, int width)
 {
   map[0].width = width;
   map[0].height = height;
   map[0].line = 1;
   map[0].index = 1;
-  return (map);
 }
 
 static t_map	*fill_map(int i, int line, t_map *map)
@@ -34,18 +34,32 @@ static t_map	*fill_map(int i, int line, t_map *map)
   return (map);
 }
 
-t_map	*create_map(int height, int width)
+static t_map	*prepare(int height, int width)
 {
-  int	i;
-  int	line;
-  int	count_index;
   t_map *map;
+
+  if (height > 20000 || width > 20000 || height < 2 || width < 2)
+    {
+      printf("Input overflow or less than 2 or not a number\n");
+      exit(EXIT_FAILURE);
+    }
+  if ((map = malloc(sizeof(t_map) * (height * width))) == NULL)
+    exit(EXIT_FAILURE);
+  first(map, height, width);
+  return (map);
+}
+
+t_map		*create_map(int height, int width)
+{
+  int		i;
+  int		line;
+  int		count_index;
+  t_map		*map;
 
   i = 1;
   line = 1;
   count_index = 1;
-  map = malloc(sizeof(t_map) * (height * width));
-  map = first(map, height, width);
+  map = prepare(height, width);
   while (line <= height)
     {
       while (count_index < width)
