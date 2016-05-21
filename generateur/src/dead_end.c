@@ -50,5 +50,5 @@ void	move(t_map *map, int *coord, int *count, int *save)
   if (direction == DOWN)
     map = move_down(map, coord, count);
   if (direction == LEFT)
-    map = move_left(map, coord, count);
+    map = move_left(map, coord, coun=t);
 }
