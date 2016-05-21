@@ -29,4 +29,8 @@ echo
 time ./profondeur/solver ./mazes/1000x1000
 echo
 echo "See above the time for profondeur resolution '1000x1000'"
+sleep 6
+clear
 make fclean
+clear
+echo "thanks for watching" 
