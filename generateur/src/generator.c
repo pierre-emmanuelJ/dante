@@ -47,7 +47,7 @@ static t_map	*generator0(t_map *map, int stack_size, int live)
       if (live)
 	display_live(map, coord);
     }
-  free (stack);
+  free(stack);
   return (map);
 }
 
