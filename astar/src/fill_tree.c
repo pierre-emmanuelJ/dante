@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:02:57 2016 Nicolas Loriot
-** Last update Fri May 20 15:45:17 2016 Nicolas Loriot
+** Last update Fri May 20 21:36:01 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -44,16 +44,16 @@ int		*get_end_maze(char **map, int *res)
   return (res);
 }
 
-t_queue		*fill_queue(t_queue *top, char **map, int *cur)
+t_queue		*fill_queue(t_queue *top, char **map, int *cur, int prio)
 {
   if (map[cur[0]][cur[1] + 1] && map[cur[0]][cur[1] + 1] == '*')
-    top = enqueue(top, cur[0], cur[1] + 1);
+    top = enqueue_prio(top, cur[0], cur[1] + 1, prio);
   if (map[cur[0] + 1] != NULL && map[cur[0] + 1][cur[1]] == '*')
-    top = enqueue(top, cur[0] + 1, cur[1]);
+    top = enqueue_prio(top, cur[0] + 1, cur[1], prio);
   if (cur[1] > 0 && map[cur[0]][cur[1] - 1] == '*')
-    top = enqueue(top, cur[0], cur[1] - 1);
+    top = enqueue_prio(top, cur[0], cur[1] - 1, prio);
   if (cur[0] > 0 && map[cur[0] - 1][cur[1]] == '*')
-    top = enqueue(top, cur[0] - 1, cur[1]);
+    top = enqueue_prio(top, cur[0] - 1, cur[1], prio);
   return (top);
 }
 
@@ -73,7 +73,8 @@ t_queue		*discover_vertex(char **map, int *cur, int *end, t_queue *q)
       map[cur[0]][cur[1]] = '+';
       cur = get_coord(map, cur);
     }
-  q = fill_queue(q, map, cur);
+  printf("taxicab = %d\n", taxicab(cur, end));
+  q = fill_queue(q, map, cur, taxicab(cur, end));
   return (q);
 }
 

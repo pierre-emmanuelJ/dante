@@ -5,12 +5,12 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Thu May 19 14:32:12 2016 Nicolas Loriot
-** Last update Fri May 20 15:59:56 2016 Nicolas Loriot
+** Last update Fri May 20 21:34:02 2016 Nicolas Loriot
 */
 
 #include "dante.h"
 
-t_queue		*enqueue(t_queue *current, int x, int y)
+t_queue		*enqueue(t_queue *current, int x, int y, int prio)
 {
   t_queue	*new;
 
@@ -21,6 +21,7 @@ t_queue		*enqueue(t_queue *current, int x, int y)
   new->coord[1] = y;
   new->next = NULL;
   new->visited = false;
+  new->prio = prio;
   if (!current)
     {
       new->tail = current;
