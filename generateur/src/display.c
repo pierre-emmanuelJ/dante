@@ -38,11 +38,14 @@ void	y_one_of_two(int live, short int *two)
     }
 }
 
-void	x_one_of_two(short int live, int width)
+void	x_one_of_two(short int live, int width, int flag)
 {
   int	i;
 
   i = 1;
+  printf("\n");
+  if (flag)
+    printf("X");
   while (i < width)
     {
       if (live)
@@ -56,7 +59,6 @@ void	x_one_of_two(short int live, int width)
       printf("*");
       i++;
     }
-  printf("\n");
 }
 
 void	print_char(t_map *map, int i, int live)
@@ -100,7 +102,8 @@ void	display_map(t_map *map, short int y, short int live, t_x_y direct)
 	}
       if (y)
 	y_one_of_two(live, &two);
-      printf("\n");
+      if (line < direct.y -1)
+	printf("\n");
       j = 0;
       line++;
     }

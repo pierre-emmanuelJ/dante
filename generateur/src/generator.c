@@ -94,11 +94,8 @@ void	perfect(char **argv, short int live, short int imparfait)
   else if (coord.x == atoi(argv[1]))
     display_map(map, 0, coord.live, coord);
   if (coord.x == atoi(argv[1]) && coord.y < atoi(argv[2]))
-    {
-      printf("X");
-      x_one_of_two(coord.live, atoi(argv[1]));
-    }
+    x_one_of_two(coord.live, atoi(argv[1]), 1);
   else if (coord.y < atoi(argv[2]))
-    x_one_of_two(coord.live, atoi(argv[1]));
+    x_one_of_two(coord.live, atoi(argv[1]), 0);
   free(map);
 }

@@ -37,7 +37,7 @@ t_map	*move_left(t_map *map, int *coord, int *count, t_x_y direct);
 t_map	*create_map(int height, int width, t_x_y coord);
 
 void	decrement_coord(int *coord, t_map *map, int *count);
-void	x_one_of_two(short int live, int width);
+void	x_one_of_two(short int live, int width, int flag);
 void	display_map(t_map *map, short int y, short int live, t_x_y direct);
 void	x_y(t_x_y *coord, char **argv);
 void	display_live(t_map *map, int coord, t_x_y direct);
