@@ -41,9 +41,8 @@ echo "Unperfect maze of 1000x1000"
 echo
 time ./largeur/solver ./mazes/I1000x1000
 echo
-echo "See above the time for largeur resolution '200x200' unperfect maze"
+echo "See above the time for largeur resolution '10000x10000' unperfect maze"
 sleep 6
-
 
 clear
 echo "Profondeur solver performance :"
@@ -86,7 +85,7 @@ echo "Unperfect maze of 1000x1000"
 echo
 time ./profondeur/solver ./mazes/I1000x1000
 echo
-echo "See above the time for profondeur resolution '200x200' unperfect maze"
+echo "See above the time for profondeur resolution '1000x1000' unperfect maze"
 sleep 6
 
 clear
