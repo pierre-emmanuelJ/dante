@@ -45,8 +45,6 @@ echo
 echo "See above the time for profondeur resolution '1000x1000'"
 sleep 6
 clear
-make fclean
-clear
 
 echo "Empty maze 35x45"
 echo
@@ -60,5 +58,6 @@ time ./profondeur/solver ./mazes/one_wall_35x45
 echo
 sleep 6
 clear
-
+make fclean
+clear
 echo "thanks for watching"
