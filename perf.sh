@@ -30,6 +30,22 @@ echo
 sleep 6
 
 clear
+echo "Unperfect maze of 35x35"
+echo
+time ./largeur/solver ./mazes/I35x35
+echo
+sleep 6
+
+clear
+echo "Unperfect maze of 1000x1000"
+echo
+time ./largeur/solver ./mazes/I1000x1000
+echo
+echo "See above the time for largeur resolution '200x200' unperfect maze"
+sleep 6
+
+
+clear
 echo "Profondeur solver performance :"
 echo "Maze size 25x25"
 echo
@@ -57,6 +73,22 @@ echo
 time ./profondeur/solver ./mazes/one_wall_35x45
 echo
 sleep 6
+
+clear
+echo "Unperfect maze of 35x35"
+echo
+time ./profondeur/solver ./mazes/I35x35
+echo
+sleep 6
+
+clear
+echo "Unperfect maze of 1000x1000"
+echo
+time ./profondeur/solver ./mazes/I1000x1000
+echo
+echo "See above the time for profondeur resolution '200x200' unperfect maze"
+sleep 6
+
 clear
 make fclean
 clear
