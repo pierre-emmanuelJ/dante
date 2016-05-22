@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:02:57 2016 Nicolas Loriot
-** Last update Fri May 20 15:45:17 2016 Nicolas Loriot
+** Last update Sun May 22 23:09:43 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -67,7 +67,7 @@ t_queue		*discover_vertex(char **map, int *cur, int *end, t_queue *q)
 	return (q);
       else if (cur[0] == end[0] && cur[1] == end[1])
 	{
-	  map[cur[0]][cur[1]] = '+';
+	  map[end[0]][end[1]] = '+';
 	  return (NULL);
 	}
       map[cur[0]][cur[1]] = '+';
@@ -77,18 +77,21 @@ t_queue		*discover_vertex(char **map, int *cur, int *end, t_queue *q)
   return (q);
 }
 
-void		bfs_v2(char **map, int *cur, int *end)
+char		**bfs_v2(char **map, int *cur, int *end)
 {
   t_queue	*q;
 
+  map[cur[0]][cur[1]] = '+';
   if (!(q = discover_vertex(map, cur, end, NULL)))
-    return ;
+    return (map);
   while (q)
     {
       map[q->coord[0]][q->coord[1]] = '+';
       if (!(q = discover_vertex(map, q->coord, end, q)))
-	return ;
+	return (map);
+      cur[0] = q->coord[0];
+      cur[1] = q->coord[1];
       q = dequeue(q);
     }
-  map[end[0]][end[1]] = '+';
+  return (map);
 }

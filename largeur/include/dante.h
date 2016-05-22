@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:09:23 2016 Nicolas Loriot
-** Last update Fri May 20 15:12:00 2016 Nicolas Loriot
+** Last update Sun May 22 23:08:51 2016 Nicolas Loriot
 */
 
 #ifndef TREE_H_
@@ -71,14 +71,15 @@ int	*get_coord(char **map, int *cur);
 int	get_y(char **map, int *cur);
 t_queue	*enqueue(t_queue *current, int x, int y);
 t_queue	*dequeue(t_queue *current);
-void	print_result(char **map, t_queue *queue);
+void	print_result(char **map);
 t_stack	*getaway(t_stack *top, char **map, int *cur, int *end);
 int	*get_end_maze(char **map, int *end);
 int	get_x(char **map, int *cur);
 void	free_stack(t_stack *last);
-void	free_queue(t_queue *current);
+void	free_queue(t_queue *current, int *end);
 t_queue	*bfs(t_queue *last, char **map, int *cur, int *end);
 void	bfs_it(char **map, int *cur, int *end);
-void		bfs_v2(char **map, int *cur, int *end);
+char	**bfs_v2(char **map, int *cur, int *end);
+void	noway();
 
 #endif /* !TREE_H_ */

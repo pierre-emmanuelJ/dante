@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:02:57 2016 Nicolas Loriot
-** Last update Thu May 19 17:15:49 2016 Nicolas Loriot
+** Last update Sun May 22 22:37:47 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -57,6 +57,12 @@ t_stack		*fill_stack(t_stack *top, char **map, int *cur)
   return (top);
 }
 
+void		noway()
+{
+  printf("no solutions found\n");
+  exit(EXIT_FAILURE);
+}
+
 t_stack		*getaway(t_stack *top, char **map, int *cur, int *end)
 {
   unsigned int		nb_ways;
@@ -73,6 +79,8 @@ t_stack		*getaway(t_stack *top, char **map, int *cur, int *end)
     }
   else if (!nb_ways)
     {
+      if (!top)
+	noway();
       tmp = top->coord;
       top = pop(top);
       return (getaway(top, map, tmp, end));

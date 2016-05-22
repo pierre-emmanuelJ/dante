@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Thu Apr 28 17:36:21 2016 Nicolas Loriot
-** Last update Thu May 19 17:04:51 2016 Nicolas Loriot
+** Last update Sun May 22 22:42:36 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -41,6 +41,12 @@ static char	**read_file(int fd)
   map_height = i;
   map[i] = NULL;
   return (map);
+}
+
+void	noway()
+{
+  printf("no solutions found\n");
+  exit(EXIT_FAILURE);
 }
 
 int	main(int ac, char **av)
