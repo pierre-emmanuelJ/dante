@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Fri Apr 29 12:51:33 2016 Nicolas Loriot
-** Last update Sun May 22 23:13:10 2016 Nicolas Loriot
+** Last update Sun May 22 23:21:19 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -55,11 +55,9 @@ int		*get_coord(char **map, int *cur)
 
 void		resolve(char **map)
 {
-  t_queue	*top;
   int		*cur;
   int		*end;
 
-  top = NULL;
   if (!(cur = malloc(sizeof(int) * 2)) || !(end = malloc(sizeof(int) * 2)))
     exit(EXIT_FAILURE);
   cur[0] = 0;
@@ -68,10 +66,10 @@ void		resolve(char **map)
   astar(map, cur, end);
   free(cur);
   free(end);
-  print_result(map, top);
+  print_result(map);
 }
 
-void		print_result(char **map, t_queue *last)
+void		print_result(char **map)
 {
   int		i;
   int		j;
