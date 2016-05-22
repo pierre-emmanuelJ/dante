@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Fri May 20 17:38:48 2016 Nicolas Loriot
-** Last update Fri May 20 21:51:04 2016 Nicolas Loriot
+** Last update Sun May 22 16:46:37 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -31,7 +31,7 @@ t_queue		*enqueue_prio(t_queue *q, int x, int y, int prio)
 
   if (!q || prio <= q->prio)
     return (enqueue(q, x, y, prio));
-  printf("q->prio = %d\n", q->prio);
+  printf("q->prio = %d\nprio = %d\n", q->prio, prio);
   tmp = q;
   if (!(cur = malloc(sizeof(int) * 2)))
     exit(EXIT_FAILURE);
@@ -44,11 +44,22 @@ t_queue		*enqueue_prio(t_queue *q, int x, int y, int prio)
       else
 	break;
     }
-  q = insert_mid(q, cur,prio);
+  q = insert_mid(q, cur, prio);
+  printf("tmp = %d\n", tmp->prio);
   return (tmp);
 }
 
-int	taxicab(int *cur, int *end)
+void	print_queue(t_queue *q)
 {
-  return (abs(cur[0] - end[0]) + abs(cur[1] - end[1]));
+  while (q)
+    {
+      printf("\nlist :\ncoord %d %d\nprio %d\n\n", q->coord[0], q->coord[1],
+	     q->prio);
+      q = q->next;
+    }
+}
+
+int	taxicab(int x, int y, int *end)
+{
+  return (abs(x - end[0]) + abs(y - end[1]));
 }

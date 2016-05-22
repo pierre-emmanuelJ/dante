@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:09:23 2016 Nicolas Loriot
-** Last update Fri May 20 21:26:22 2016 Nicolas Loriot
+** Last update Sat May 21 19:05:31 2016 Nicolas Loriot
 */
 
 #ifndef TREE_H_
@@ -65,12 +65,11 @@ t_queue	*enqueue_prio(t_queue *q, int x, int y, int prio);
 t_queue	*enqueue(t_queue *current, int x, int y, int prio);
 t_queue	*dequeue(t_queue *current);
 void	print_result(char **map, t_queue *queue);
-int	taxicab(int *cur, int *end);
+int	taxicab(int x, int y, int *end);
 int	*get_end_maze(char **map, int *end);
 int	get_x(char **map, int *cur);
 void	free_queue(t_queue *current);
-t_queue	*bfs(t_queue *last, char **map, int *cur, int *end);
-void	bfs_it(char **map, int *cur, int *end);
-void	bfs_v2(char **map, int *cur, int *end);
+void	astar(char **map, int *cur, int *end);
+void	print_queue(t_queue *q);
 
 #endif /* !TREE_H_ */

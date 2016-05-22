@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Fri Apr 29 12:51:33 2016 Nicolas Loriot
-** Last update Fri May 20 16:02:24 2016 Nicolas Loriot
+** Last update Sun May 22 17:35:43 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -65,7 +65,7 @@ void		resolve(char **map)
   cur[0] = 0;
   cur[1] = 0;
   end = get_end_maze(map, end);
-  bfs_v2(map, cur, end);
+  astar(map, cur, end);
   free(cur);
   free(end);
   print_result(map, top);
@@ -93,8 +93,8 @@ void		print_result(char **map, t_queue *last)
       i++;
     }
   i = 0;
-  free_queue(last);
-  while (map[i])
-    free(map[i++]);
-  exit(EXIT_SUCCESS);
+  /* free_queue(last); */
+  /* while (map[i]) */
+  /*   free(map[i++]); */
+  /* exit(EXIT_SUCCESS); */
 }

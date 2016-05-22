@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:02:57 2016 Nicolas Loriot
-** Last update Fri May 20 21:36:01 2016 Nicolas Loriot
+** Last update Sun May 22 17:51:09 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -44,16 +44,22 @@ int		*get_end_maze(char **map, int *res)
   return (res);
 }
 
-t_queue		*fill_queue(t_queue *top, char **map, int *cur, int prio)
+t_queue		*fill_queue(t_queue *top, char **map, int *cur, int *end)
 {
   if (map[cur[0]][cur[1] + 1] && map[cur[0]][cur[1] + 1] == '*')
-    top = enqueue_prio(top, cur[0], cur[1] + 1, prio);
+    top = enqueue_prio(top, cur[0], cur[1] + 1,
+		       taxicab(cur[0], cur[1] + 1, end));
   if (map[cur[0] + 1] != NULL && map[cur[0] + 1][cur[1]] == '*')
-    top = enqueue_prio(top, cur[0] + 1, cur[1], prio);
+    top = enqueue_prio(top, cur[0] + 1, cur[1],
+		       taxicab(cur[0] + 1, cur[1], end));
   if (cur[1] > 0 && map[cur[0]][cur[1] - 1] == '*')
-    top = enqueue_prio(top, cur[0], cur[1] - 1, prio);
+    top = enqueue_prio(top, cur[0], cur[1] - 1,
+		       taxicab(cur[0], cur[1] - 1, end));
   if (cur[0] > 0 && map[cur[0] - 1][cur[1]] == '*')
-    top = enqueue_prio(top, cur[0] - 1, cur[1], prio);
+    top = enqueue_prio(top, cur[0] - 1, cur[1],
+		       taxicab(cur[0] - 1, cur[1], end));
+  printf("top = %d %d\n", top->coord[0], top->coord[1]);
+  /* map[top->coord[0]][top->coord[1]] = '+'; */
   return (top);
 }
 
@@ -64,7 +70,7 @@ t_queue		*discover_vertex(char **map, int *cur, int *end, t_queue *q)
   while ((nb_ways = get_nb_voisin(map, cur[0], cur[1])) < 2)
     {
       if (!nb_ways)
-	return (q);
+	return (dequeue(q));
       else if (cur[0] == end[0] && cur[1] == end[1])
 	{
 	  map[cur[0]][cur[1]] = '+';
@@ -73,23 +79,27 @@ t_queue		*discover_vertex(char **map, int *cur, int *end, t_queue *q)
       map[cur[0]][cur[1]] = '+';
       cur = get_coord(map, cur);
     }
-  printf("taxicab = %d\n", taxicab(cur, end));
-  q = fill_queue(q, map, cur, taxicab(cur, end));
+  printf("cur = x[%d]y[%d]\ntaxicab = %d\n", cur[0], cur[1], taxicab(cur[0], cur[1], end));
+  q = fill_queue(q, map, cur, end);
+  map[cur[0]][cur[1]] = '+';
+  printf("prio_end : %d coord_end : %d %d\n", q->prio, q->coord[0], q->coord[1]);
   return (q);
 }
 
-void		bfs_v2(char **map, int *cur, int *end)
+void		astar(char **map, int *cur, int *end)
 {
   t_queue	*q;
 
   if (!(q = discover_vertex(map, cur, end, NULL)))
     return ;
-  while (q)
+  while (cur[0] != end[0] && cur[1] != end[1])
     {
+      printf("main = %d %d\nmain prio = %d\n", q->coord[0], q->coord[1], q->prio);
       map[q->coord[0]][q->coord[1]] = '+';
       if (!(q = discover_vertex(map, q->coord, end, q)))
 	return ;
-      q = dequeue(q);
+      /* q = dequeue(q); */
+      print_result(map, q);
+      print_queue(q);
     }
-  map[end[0]][end[1]] = '+';
 }
