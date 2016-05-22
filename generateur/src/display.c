@@ -25,7 +25,7 @@ void	y_one_of_two(int live, short int *two)
       if (live)
 	printf("\x1B[44m*\x1B[0m");
       else
-	printf("*");
+	putchar('*');
       *two += 1;
     }
   else if (*two == 1)
@@ -33,7 +33,7 @@ void	y_one_of_two(int live, short int *two)
      if (live)
 	printf("\x1B[37mX\x1B[0m");
       else
-	printf("X");
+	putchar('X');
       *two = 0;
     }
 }
@@ -43,20 +43,20 @@ void	x_one_of_two(short int live, int width, int flag)
   int	i;
 
   i = 1;
-  printf("\n");
+  putchar('\n');
   if (flag)
-    printf("X");
+    putchar('X');
   while (i < width)
     {
       if (live)
       printf("\x1B[37mX\x1B[0m");
       else
-      printf("X");
+      putchar('X');
       i++;
       if (live)
       printf("\x1B[44m*\x1B[0m");
       else
-      printf("*");
+      putchar('*');
       i++;
     }
 }
@@ -66,7 +66,7 @@ void	print_char(t_map *map, int i, int live)
   if (live)
     {
       if (map[i].index == 0)
-	printf("X");
+	putchar('X');
       else if (map[i].index == 1)
 	printf("\x1B[44m*\x1B[0m");
       else if (map[i].index == 6)
@@ -75,9 +75,9 @@ void	print_char(t_map *map, int i, int live)
   else
     {
       if (map[i].index == 0)
-	printf("X");
+	putchar('X');
       else if (map[i].index == 1)
-	printf("*");
+	putchar('*');
     }
 }
 
@@ -103,7 +103,7 @@ void	display_map(t_map *map, short int y, short int live, t_x_y direct)
       if (y)
 	y_one_of_two(live, &two);
       if (line < direct.y -1)
-	printf("\n");
+	putchar('\n');
       j = 0;
       line++;
     }
