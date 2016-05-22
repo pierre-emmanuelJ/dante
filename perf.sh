@@ -1,5 +1,5 @@
 #!/bin/bash
-make re
+make
 clear
 echo "Largeur solver performance :"
 echo "Maze size 25x25"
@@ -33,4 +33,4 @@ sleep 6
 clear
 make fclean
 clear
-echo "thanks for watching" 
+echo "thanks for watching"
