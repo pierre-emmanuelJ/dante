@@ -19,10 +19,8 @@ static t_map	*fill_last_index(t_map *map, int last, int line)
   return (map);
 }
 
-static void	first(t_map *map, int height, int width)
+static void	first(t_map *map)
 {
-  map[0].width = width;
-  map[0].height = height;
   map[0].line = 1;
   map[0].index = 1;
 }
@@ -45,7 +43,7 @@ static t_map	*prepare(int height, int width, t_x_y coord)
     }
   if ((map = malloc(sizeof(t_map) * (height * width))) == NULL)
     exit(EXIT_FAILURE);
-  first(map, height, width);
+  first(map);
   return (map);
 }
 

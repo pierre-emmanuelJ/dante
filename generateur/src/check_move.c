@@ -10,28 +10,28 @@
 
 #include "generator.h"
 
-void	check_move_up(t_map *map, int *coord)
+void	check_move_up(t_map *map, int *coord, t_x_y direct)
 {
   if (map[*coord].line > 2)
     {
-      if (map[*coord - map[0].width].index == 0
-	  && map[*coord - (map[0].width * 2)].index == 0)
-	*coord = *coord - (map[0].width * 2);
+      if (map[*coord - direct.x].index == 0
+	  && map[*coord - (direct.x * 2)].index == 0)
+	*coord = *coord - (direct.x * 2);
     }
 }
 
-void	check_move_right(t_map *map, int *coord)
+void	check_move_right(t_map *map, int *coord, t_x_y direct)
 {
   int	position;
 
   if (map[*coord].line > 1)
     {
-      position = (*coord - ((map[*coord].line * map[0].width) - map[0].width));
-      if (position < map[0].width -2
+      position = (*coord - ((map[*coord].line * direct.x) - direct.x));
+      if (position < direct.x -2
 	  && map[*coord + 1].index == 0 && map[*coord + 2].index == 0)
 	*coord = *coord + 2;
     }
-  else if ((*coord < map[0].width -1) && map[*coord].line == 1)
+  else if ((*coord < direct.x -1) && map[*coord].line == 1)
     {
       if (map[*coord + 1].index == 0
 	  && map[*coord + 2].index == 0)
@@ -39,23 +39,23 @@ void	check_move_right(t_map *map, int *coord)
     }
 }
 
-void	check_move_down(t_map *map, int *coord)
+void	check_move_down(t_map *map, int *coord, t_x_y direct)
 {
-  if (map[*coord].line < map[0].height -1)
+  if (map[*coord].line < direct.y -1)
     {
-      if (map[*coord + map[0].width].index == 0
-	  && map[*coord + (map[0].width * 2)].index == 0)
-	*coord = *coord + (map[0].width * 2);
+      if (map[*coord + direct.x].index == 0
+	  && map[*coord + (direct.x * 2)].index == 0)
+	*coord = *coord + (direct.x * 2);
     }
 }
 
-void	check_move_left(t_map *map, int *coord)
+void	check_move_left(t_map *map, int *coord, t_x_y direct)
 {
   int	position;
 
   if (map[*coord].line > 1)
     {
-      position = (*coord - ((map[*coord].line * map[0].width) - map[0].width));
+      position = (*coord - ((map[*coord].line * direct.x) - direct.x));
       if (position > 1 && map[*coord - 1].index == 0 && map[*coord - 2].index == 0)
 	*coord = *coord -2;
     }

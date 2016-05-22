@@ -25,7 +25,7 @@ void	y_one_of_two(int live, short int *two)
       if (live)
 	printf("\x1B[44m*\x1B[0m");
       else
-	printf("*");
+	putchar('*');
       *two += 1;
     }
   else if (*two == 1)
@@ -33,30 +33,32 @@ void	y_one_of_two(int live, short int *two)
      if (live)
 	printf("\x1B[37mX\x1B[0m");
       else
-	printf("X");
+	putchar('X');
       *two = 0;
     }
 }
 
-void	x_one_of_two(short int live, int width)
+void	x_one_of_two(short int live, int width, int flag)
 {
   int	i;
 
   i = 1;
+  putchar('\n');
+  if (flag)
+    putchar('X');
   while (i < width)
     {
       if (live)
       printf("\x1B[37mX\x1B[0m");
       else
-      printf("X");
+      putchar('X');
       i++;
       if (live)
       printf("\x1B[44m*\x1B[0m");
       else
-      printf("*");
+      putchar('*');
       i++;
     }
-  printf("\n");
 }
 
 void	print_char(t_map *map, int i, int live)
@@ -64,7 +66,7 @@ void	print_char(t_map *map, int i, int live)
   if (live)
     {
       if (map[i].index == 0)
-	printf("X");
+	putchar('X');
       else if (map[i].index == 1)
 	printf("\x1B[44m*\x1B[0m");
       else if (map[i].index == 6)
@@ -73,13 +75,13 @@ void	print_char(t_map *map, int i, int live)
   else
     {
       if (map[i].index == 0)
-	printf("X");
+	putchar('X');
       else if (map[i].index == 1)
-	printf("*");
+	putchar('*');
     }
 }
 
-void	display_map(t_map *map, short int y, short int live)
+void	display_map(t_map *map, short int y, short int live, t_x_y direct)
 {
   int	i;
   int	j;
@@ -90,9 +92,9 @@ void	display_map(t_map *map, short int y, short int live)
   i = 0;
   j = 0;
   line = 0;
-  while (line < map[0].height)
+  while (line < direct.y)
     {
-      while (j < map[0].width)
+      while (j < direct.x)
 	{
 	  print_char(map, i, live);
 	  j++;
@@ -100,16 +102,17 @@ void	display_map(t_map *map, short int y, short int live)
 	}
       if (y)
 	y_one_of_two(live, &two);
-      printf("\n");
+      if (line < direct.y -1)
+	putchar('\n');
       j = 0;
       line++;
     }
 }
 
-void	display_live(t_map *map, int coord)
+void	display_live(t_map *map, int coord, t_x_y direct)
 {
   map[coord].index = 6;
-  display_map(map, 0, 1);
+  display_map(map, 0, 1, direct);
   printf("\n\n\n");
   map[coord].index = 1;
   usleep(50000);
