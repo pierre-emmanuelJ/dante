@@ -30,6 +30,11 @@ typedef	struct	s_x_y
   short int	live;
 }		t_x_y;
 
+typedef	struct	s_move_dir
+{
+  char		str[5];
+}		t_move_dir;
+
 t_map	*move_up(t_map *map, int *coord, int *count, t_x_y direct);
 t_map	*move_right(t_map *map, int *coord, int *count, t_x_y direct);
 t_map	*move_down(t_map *map, int *coord, int *count, t_x_y direct);

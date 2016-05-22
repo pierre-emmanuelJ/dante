@@ -33,49 +33,44 @@ int	check_dead_end(t_map *map, int coord, t_x_y direction)
   return (0);
 }
 
-char	*help_move(t_map *map, int *coord, t_x_y direct)
+void	help_move(t_map *map, int *coord, t_x_y direct, t_move_dir *move_dir)
 {
   int	i;
   int	dir;
-  char	*move;
 
   i = 0;
-  if ((move = malloc(sizeof(char) * 5)) == NULL)
-    exit(EXIT_FAILURE);
   dir = *coord;
   check_move_up(map, &dir, direct);
   if (dir != *coord)
-    move[i++] = 'u';
+    move_dir->str[i++] = 'u';
   dir = *coord;
   check_move_right(map, &dir, direct);
   if (dir != *coord)
-    move[i++] = 'r';
+    move_dir->str[i++] = 'r';
   dir = *coord;
   check_move_down(map, &dir, direct);
   if (dir != *coord)
-    move[i++] = 'd';
+    move_dir->str[i++] = 'd';
   dir = *coord;
   check_move_left(map, &dir, direct);
   if (dir != *coord)
-    move[i++] = 'l';
-  move[i] = 0;
-  return (move);
+    move_dir->str[i++] = 'l';
+  move_dir->str[i] = 0;
 }
 
 void	move(t_map *map, int *coord, int *count, t_x_y direct)
 {
-  int	direction;
-  char	*dir;
+  int		direction;
+  t_move_dir	move_dir;
 
-  dir = help_move(map, coord, direct);
-  direction = rand() % (strlen(dir));
-  if (dir[direction] == 'u')
+  help_move(map, coord, direct, &move_dir);
+  direction = rand() % (strlen(move_dir.str));
+  if (move_dir.str[direction] == 'u')
     map = move_up(map, coord, count, direct);
-  if (dir[direction] == 'r')
+  if (move_dir.str[direction] == 'r')
     map = move_right(map, coord, count, direct);
-  if (dir[direction] == 'd')
+  if (move_dir.str[direction] == 'd')
     map = move_down(map, coord, count, direct);
-  if (dir[direction] == 'l')
+  if (move_dir.str[direction] == 'l')
     map = move_left(map, coord, count, direct);
-  free(dir);
 }
