@@ -32,7 +32,8 @@ static t_map	*generator0(t_map *map, int stack_size, int live, t_x_y direct)
   int	i;
   int	*stack;
 
-  stack = malloc(sizeof(int) * stack_size + 1);
+  if ((stack = malloc(sizeof(int) * stack_size + 1)) == NULL)
+    exit(EXIT_FAILURE);
   i = 0;
   count = 1;
   coord = 0;

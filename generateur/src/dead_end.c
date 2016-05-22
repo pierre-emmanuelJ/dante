@@ -12,11 +12,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <time.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdio.h>
 
 int	check_dead_end(t_map *map, int coord, t_x_y direction)
 {
@@ -45,7 +40,8 @@ char	*help_move(t_map *map, int *coord, t_x_y direct)
   char	*move;
 
   i = 0;
-  move = malloc(sizeof(char) * 5);
+  if ((move = malloc(sizeof(char) * 5)) == NULL)
+    exit(EXIT_FAILURE);
   dir = *coord;
   check_move_up(map, &dir, direct);
   if (dir != *coord)
