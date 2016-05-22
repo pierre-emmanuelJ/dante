@@ -9,6 +9,7 @@
 */
 
 #include "generator.h"
+#include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
@@ -17,7 +18,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int	check_dead_end(t_map *map, int coord)
+int	check_dead_end(t_map *map, int coord, t_x_y direction)
 {
   int	up;
   int	right;
@@ -28,27 +29,57 @@ int	check_dead_end(t_map *map, int coord)
   right = coord;
   down = coord;
   left = coord;
-  check_move_up(map, &up);
-  check_move_right(map, &right);
-  check_move_down(map, &down);
-  check_move_left(map, &left);
+  check_move_up(map, &up, direction);
+  check_move_right(map, &right, direction);
+  check_move_down(map, &down, direction);
+  check_move_left(map, &left, direction);
   if (up == coord && right == coord && down == coord && left == coord)
     return (1);
   return (0);
 }
 
-void	move(t_map *map, int *coord, int *count, int *save)
+char	*help_move(t_map *map, int *coord, t_x_y direct)
+{
+  int	i;
+  int	dir;
+  char	*move;
+
+  i = 0;
+  move = malloc(sizeof(char) * 5);
+  dir = *coord;
+  check_move_up(map, &dir, direct);
+  if (dir != *coord)
+    move[i++] = 'u';
+  dir = *coord;
+  check_move_right(map, &dir, direct);
+  if (dir != *coord)
+    move[i++] = 'r';
+  dir = *coord;
+  check_move_down(map, &dir, direct);
+  if (dir != *coord)
+    move[i++] = 'd';
+  dir = *coord;
+  check_move_left(map, &dir, direct);
+  if (dir != *coord)
+    move[i++] = 'l';
+  move[i] = 0;
+  return (move);
+}
+
+void	move(t_map *map, int *coord, int *count, t_x_y direct)
 {
   int	direction;
+  char	*dir;
 
-  *save = *coord;
-  direction = rand() % 4;
-  if (direction == UP)
-    map = move_up(map, coord, count);
-  if (direction == RIGHT)
-    map = move_right(map, coord, count);
-  if (direction == DOWN)
-    map = move_down(map, coord, count);
-  if (direction == LEFT)
-    map = move_left(map, coord, count);
+  dir = help_move(map, coord, direct);
+  direction = rand() % (strlen(dir));
+  if (dir[direction] == 'u')
+    map = move_up(map, coord, count, direct);
+  if (dir[direction] == 'r')
+    map = move_right(map, coord, count, direct);
+  if (dir[direction] == 'd')
+    map = move_down(map, coord, count, direct);
+  if (dir[direction] == 'l')
+    map = move_left(map, coord, count, direct);
+  free(dir);
 }

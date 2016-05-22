@@ -79,7 +79,7 @@ void	print_char(t_map *map, int i, int live)
     }
 }
 
-void	display_map(t_map *map, short int y, short int live)
+void	display_map(t_map *map, short int y, short int live, t_x_y direct)
 {
   int	i;
   int	j;
@@ -90,9 +90,9 @@ void	display_map(t_map *map, short int y, short int live)
   i = 0;
   j = 0;
   line = 0;
-  while (line < map[0].height)
+  while (line < direct.y)
     {
-      while (j < map[0].width)
+      while (j < direct.x)
 	{
 	  print_char(map, i, live);
 	  j++;
@@ -106,10 +106,10 @@ void	display_map(t_map *map, short int y, short int live)
     }
 }
 
-void	display_live(t_map *map, int coord)
+void	display_live(t_map *map, int coord, t_x_y direct)
 {
   map[coord].index = 6;
-  display_map(map, 0, 1);
+  display_map(map, 0, 1, direct);
   printf("\n\n\n");
   map[coord].index = 1;
   usleep(50000);
