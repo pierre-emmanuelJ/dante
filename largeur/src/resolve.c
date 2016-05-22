@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Fri Apr 29 12:51:33 2016 Nicolas Loriot
-** Last update Fri May 20 16:02:24 2016 Nicolas Loriot
+** Last update Sun May 22 19:12:07 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -84,7 +84,7 @@ void		print_result(char **map, t_queue *last)
       while (map[i][j])
 	{
 	  if (map[i][j] == '+')
-	    printf("\x1B[44mo\x1B[0m");
+	    printf("o");
 	  else
 	    putchar(map[i][j]);
 	  j++;
