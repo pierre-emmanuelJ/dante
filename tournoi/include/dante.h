@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:09:23 2016 Nicolas Loriot
-** Last update Fri May 27 19:13:31 2016 Nicolas Loriot
+** Last update Sun May 22 23:08:51 2016 Nicolas Loriot
 */
 
 #ifndef TREE_H_
@@ -43,6 +43,14 @@ typedef struct		s_stack
   struct s_stack	*next;
 }			t_stack;
 
+typedef struct		s_queue
+{
+  int			*coord;
+  bool			visited;
+  struct s_queue	*next;
+  struct s_queue	*tail;
+}			t_queue;
+
 int	map_height;
 int	map_width;
 
@@ -52,8 +60,6 @@ int	map_width;
 ** PROTO
 */
 
-char	**clear_path(int *goal, char **map, int *cur);
-char	**remove_orphans(char **map);
 void	resolve(char **map);
 int	visit_left(char **map, int x, int y);
 int	visit_right(char **map, int x, int y);
@@ -63,10 +69,17 @@ t_stack	*add(t_stack *last, int x, int y);
 t_stack	*pop(t_stack *last);
 int	*get_coord(char **map, int *cur);
 int	get_y(char **map, int *cur);
-void	print_result(char **map, t_stack *last);
+t_queue	*enqueue(t_queue *current, int x, int y);
+t_queue	*dequeue(t_queue *current);
+void	print_result(char **map);
 t_stack	*getaway(t_stack *top, char **map, int *cur, int *end);
 int	*get_end_maze(char **map, int *end);
 int	get_x(char **map, int *cur);
 void	free_stack(t_stack *last);
+void	free_queue(t_queue *current, int *end);
+t_queue	*bfs(t_queue *last, char **map, int *cur, int *end);
+void	bfs_it(char **map, int *cur, int *end);
+char	**bfs_v2(char **map, int *cur, int *end);
+void	noway();
 
 #endif /* !TREE_H_ */

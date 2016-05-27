@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:02:57 2016 Nicolas Loriot
-** Last update Fri May 27 19:15:58 2016 Nicolas Loriot
+** Last update Sun May 22 23:09:43 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -44,48 +44,54 @@ int		*get_end_maze(char **map, int *res)
   return (res);
 }
 
-t_stack		*fill_stack(t_stack *top, char **map, int *cur)
+t_queue		*fill_queue(t_queue *top, char **map, int *cur)
 {
   if (map[cur[0]][cur[1] + 1] && map[cur[0]][cur[1] + 1] == '*')
-    top = add(top, cur[0], cur[1] + 1);
+    top = enqueue(top, cur[0], cur[1] + 1);
   if (map[cur[0] + 1] != NULL && map[cur[0] + 1][cur[1]] == '*')
-    top = add(top, cur[0] + 1, cur[1]);
+    top = enqueue(top, cur[0] + 1, cur[1]);
   if (cur[1] > 0 && map[cur[0]][cur[1] - 1] == '*')
-    top = add(top, cur[0], cur[1] - 1);
+    top = enqueue(top, cur[0], cur[1] - 1);
   if (cur[0] > 0 && map[cur[0] - 1][cur[1]] == '*')
-    top = add(top, cur[0] - 1, cur[1]);
+    top = enqueue(top, cur[0] - 1, cur[1]);
   return (top);
 }
 
-void		noway()
+t_queue		*discover_vertex(char **map, int *cur, int *end, t_queue *q)
 {
-  printf("no solutions found\n");
-  exit(EXIT_FAILURE);
+  int		nb_ways;
+
+  while ((nb_ways = get_nb_voisin(map, cur[0], cur[1])) < 2)
+    {
+      if (!nb_ways)
+	return (q);
+      else if (cur[0] == end[0] && cur[1] == end[1])
+	{
+	  map[end[0]][end[1]] = '+';
+	  return (NULL);
+	}
+      map[cur[0]][cur[1]] = '+';
+      cur = get_coord(map, cur);
+    }
+  q = fill_queue(q, map, cur);
+  return (q);
 }
 
-t_stack		*getaway(t_stack *top, char **map, int *cur, int *end)
+char		**bfs_v2(char **map, int *cur, int *end)
 {
-  unsigned int		nb_ways;
-  int			*tmp;
+  t_queue	*q;
 
   map[cur[0]][cur[1]] = '+';
-  if (end[0] == cur[0] && end[1] == cur[1])
-    return (top);
-  nb_ways = get_nb_voisin(map, cur[0], cur[1]);
-  if (nb_ways > 1)
+  if (!(q = discover_vertex(map, cur, end, NULL)))
+    return (map);
+  while (q)
     {
-      top = fill_stack(top, map, cur);
-      return (getaway(top, map, get_coord(map, cur), end));
+      map[q->coord[0]][q->coord[1]] = '+';
+      if (!(q = discover_vertex(map, q->coord, end, q)))
+	return (map);
+      cur[0] = q->coord[0];
+      cur[1] = q->coord[1];
+      q = dequeue(q);
     }
-  else if (!nb_ways)
-    {
-      (!top) ? noway() : (0);
-      tmp = top->coord;
-      map = clear_path(tmp, map, cur);
-      top = pop(top);
-      return (getaway(top, map, tmp, end));
-    }
-  else
-    return (getaway(top, map, get_coord(map, cur), end));
-  return (top);
+  return (map);
 }
