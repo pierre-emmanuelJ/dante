@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Fri Apr 29 12:51:33 2016 Nicolas Loriot
-** Last update Fri May 27 19:13:43 2016 Nicolas Loriot
+** Last update Fri May 27 19:20:35 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -42,7 +42,7 @@ int		*get_coord(char **map, int *cur)
     {
       if ((cur[1] = get_y(map, tmp)) > 0)
 	{
-	  /* free(tmp); */
+	  free(tmp);
 	  return (cur);
 	}
     }
@@ -51,7 +51,7 @@ int		*get_coord(char **map, int *cur)
     {
       if ((cur[0] = get_x(map, tmp)) > 0)
 	{
-	  /* free(tmp); */
+	  free(tmp);
 	  return (cur);
 	}
     }
@@ -91,7 +91,7 @@ void		print_result(char **map, t_stack *last)
       while (map[i][j])
 	{
 	  if (map[i][j] == '+')
-	    printf("\033[31mo\033[0m");
+	    printf("o");
 	  else if (map[i][j] == 'X')
 	    putchar(map[i][j]);
 	  else if (map[i][j] == '*' || map[i][j] == '$')
@@ -101,10 +101,9 @@ void		print_result(char **map, t_stack *last)
       putchar('\n');
       i++;
     }
-  puts("\n\n");
-  /* i = 0; */
-  /* free_stack(last); */
-  /* while (map[i]) */
-  /*   free(map[i++]); */
-  /* exit(EXIT_SUCCESS); */
+  i = 0;
+  free_stack(last);
+  while (map[i])
+    free(map[i++]);
+  exit(EXIT_SUCCESS);
 }
