@@ -79,7 +79,8 @@ t_map	*move_left(t_map *map, int *coord, int *count, t_x_y direct)
   if (map[*coord].line > 1)
     {
       position = (*coord - ((map[*coord].line * direct.x) - direct.x));
-      if (position > 1 && map[*coord - 1].index == 0 && map[*coord - 2].index == 0)
+      if (position > 1 && map[*coord - 1].index == 0 &&
+	  map[*coord - 2].index == 0)
 	decrement_coord(coord, map, count);
     }
   else if (*coord > 1 && map[*coord].line == 1)

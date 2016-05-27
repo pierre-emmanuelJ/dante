@@ -56,7 +56,8 @@ void	check_move_left(t_map *map, int *coord, t_x_y direct)
   if (map[*coord].line > 1)
     {
       position = (*coord - ((map[*coord].line * direct.x) - direct.x));
-      if (position > 1 && map[*coord - 1].index == 0 && map[*coord - 2].index == 0)
+      if (position > 1 && map[*coord - 1].index == 0 &&
+	  map[*coord - 2].index == 0)
 	*coord = *coord -2;
     }
   else if (*coord > 1 && map[*coord].line == 1)
