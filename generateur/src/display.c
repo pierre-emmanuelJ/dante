@@ -102,7 +102,7 @@ void	display_map(t_map *map, short int y, short int live, t_x_y direct)
 	}
       if (y)
 	y_one_of_two(live, &two);
-      if (line < direct.y -1)
+      if (line < direct.y - 1)
 	putchar('\n');
       j = 0;
       line++;

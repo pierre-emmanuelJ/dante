@@ -62,8 +62,8 @@ t_map		*create_map(int height, int width, t_x_y coord)
     {
       while (count_index < width)
 	{
-	  if (line == height && i == (height * width) -1)
-	    return (fill_last_index(map, (height * width) -1, line));
+	  if (line == height && i == (height * width) - 1)
+	    return (fill_last_index(map, (height * width) - 1, line));
 	  map = fill_map(i, line, map);
 	  count_index++;
 	  i++;

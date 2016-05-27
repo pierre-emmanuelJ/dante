@@ -12,9 +12,9 @@
 
 void	decrement_coord(int *coord, t_map *map, int *count)
 {
-  *coord = *coord -1;
+  *coord = *coord - 1;
   map[*coord].index = 1;
-  *coord = *coord -1;
+  *coord = *coord - 1;
   map[*coord].index = 1;
   *count = *count + 2;
 }
