@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:02:57 2016 Nicolas Loriot
-** Last update Sun May 22 22:37:47 2016 Nicolas Loriot
+** Last update Fri May 27 19:15:58 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -79,9 +79,9 @@ t_stack		*getaway(t_stack *top, char **map, int *cur, int *end)
     }
   else if (!nb_ways)
     {
-      if (!top)
-	noway();
+      (!top) ? noway() : (0);
       tmp = top->coord;
+      map = clear_path(tmp, map, cur);
       top = pop(top);
       return (getaway(top, map, tmp, end));
     }

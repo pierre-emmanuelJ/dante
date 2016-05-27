@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Fri Apr 29 15:35:51 2016 Nicolas Loriot
-** Last update Thu May 19 17:15:43 2016 Nicolas Loriot
+** Last update Fri May 27 19:14:59 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -53,4 +53,28 @@ t_stack		*add(t_stack *last, int x, int y)
   new->coord[0] = x;
   new->coord[1] = y;
   return (new);
+}
+
+char		**remove_orphans(char **map)
+{
+  int		i;
+  int		j;
+
+  i = 0;
+  while (map[i])
+    {
+      j = 0;
+      while (map[i][j])
+	{
+	  if (map[i][j] == '+' && i > 0 && map[i + 1])
+	    {
+	      if ((map[i][j + 1] != '+') && (map[i + 1][j] != '+') &&
+		  (map[i][j - 1] != '+') && (map[i - 1][j] != '+'))
+		map[i][j] = '*';
+	    }
+	  j++;
+	}
+      i++;
+    }
+  return (map);
 }

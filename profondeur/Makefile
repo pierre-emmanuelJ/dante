@@ -5,7 +5,7 @@
 ## Login   <loriot_n@epitech.net>
 ## 
 ## Started on  Mon May 02 12:40:32 2016 Nicolas Loriot
-## Last update Sun May 22 23:10:33 2016 Nicolas Loriot
+## Last update Fri May 27 17:15:04 2016 Nicolas Loriot
 ##
 
 CC		=	gcc
@@ -19,6 +19,7 @@ SRC		=	src/resolve.c \
 			src/fill_tree.c \
 			src/visit_maze.c \
 			src/get_next_line.c \
+			src/rm_noway.c \
 
 INCDIR	=	./include
 

@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 **
 ** Started on  Thu Apr 28 17:09:23 2016 Nicolas Loriot
-** Last update Wed May 18 15:53:50 2016 Nicolas Loriot
+** Last update Fri May 27 19:13:31 2016 Nicolas Loriot
 */
 
 #ifndef TREE_H_
@@ -52,6 +52,8 @@ int	map_width;
 ** PROTO
 */
 
+char	**clear_path(int *goal, char **map, int *cur);
+char	**remove_orphans(char **map);
 void	resolve(char **map);
 int	visit_left(char **map, int x, int y);
 int	visit_right(char **map, int x, int y);

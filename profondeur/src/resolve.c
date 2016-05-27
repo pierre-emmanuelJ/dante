@@ -5,7 +5,7 @@
 ** Login   <loriot_n@epitech.net>
 ** 
 ** Started on  Fri Apr 29 12:51:33 2016 Nicolas Loriot
-** Last update Sun May 22 19:11:46 2016 Nicolas Loriot
+** Last update Fri May 27 19:13:43 2016 Nicolas Loriot
 */
 
 #include "dante.h"
@@ -41,13 +41,19 @@ int		*get_coord(char **map, int *cur)
   if ((cur[0] = get_x(map, cur)) == tmp[0])
     {
       if ((cur[1] = get_y(map, tmp)) > 0)
-	return (cur);
+	{
+	  /* free(tmp); */
+	  return (cur);
+	}
     }
   cur[0] = tmp[0];
   if ((cur[1] = get_y(map, tmp)) == tmp[1])
     {
       if ((cur[0] = get_x(map, tmp)) > 0)
-	return (cur);
+	{
+	  /* free(tmp); */
+	  return (cur);
+	}
     }
   free(tmp);
   return (cur);
@@ -68,6 +74,7 @@ void		resolve(char **map)
   getaway(top, map, cur, end);
   free(cur);
   free(end);
+  map = remove_orphans(map);
   print_result(map, top);
 }
 
@@ -84,17 +91,20 @@ void		print_result(char **map, t_stack *last)
       while (map[i][j])
 	{
 	  if (map[i][j] == '+')
-	    printf("o");
-	  else
+	    printf("\033[31mo\033[0m");
+	  else if (map[i][j] == 'X')
 	    putchar(map[i][j]);
+	  else if (map[i][j] == '*' || map[i][j] == '$')
+	    putchar('*');
 	  j++;
 	}
       putchar('\n');
       i++;
     }
-  i = 0;
-  free_stack(last);
-  while (map[i])
-    free(map[i++]);
-  exit(EXIT_SUCCESS);
+  puts("\n\n");
+  /* i = 0; */
+  /* free_stack(last); */
+  /* while (map[i]) */
+  /*   free(map[i++]); */
+  /* exit(EXIT_SUCCESS); */
 }
