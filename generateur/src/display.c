@@ -112,6 +112,7 @@ void	display_map(t_map *map, short int y, short int live, t_x_y direct)
 void	display_live(t_map *map, int coord, t_x_y direct)
 {
   map[coord].index = 6;
+  system("clear");
   display_map(map, 0, 1, direct);
   printf("\n\n\n");
   map[coord].index = 1;
